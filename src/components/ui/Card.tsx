@@ -57,11 +57,14 @@ const Card: FC<CardProps> = ({ movie }) => {
             </div>
           </div>
         )}
-        <img
-          src={image}
-          className="object-contain rounded-lg"
-          alt={name || title}
-        />
+        <div className="h-48">
+          <img
+            src={image}
+            className="object-cover rounded-lg h-full w-full"
+            alt={name || title}
+          />
+        </div>
+
         <div
           className="absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
           onClick={handleBookmark}
