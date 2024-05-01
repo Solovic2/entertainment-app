@@ -1,13 +1,13 @@
 import { PiTelevision } from "react-icons/pi";
 import { FaBookmark } from "react-icons/fa6";
 import { MdLocalMovies } from "react-icons/md";
-import { HiSquares2X2 } from "react-icons/hi2";
+import { PiSquaresFourFill } from "react-icons/pi";
 
 export const basic_imageUrl = "https://image.tmdb.org/t/p/original/";
 export const navBarItems = [
   {
     id: 0,
-    name: <HiSquares2X2 className="md:w-[20px] md:h-[20px]" />,
+    name: <PiSquaresFourFill className="md:w-[20px] md:h-[20px]" />,
     url: "/",
   },
   {
