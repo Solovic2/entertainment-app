@@ -9,7 +9,7 @@ import Bookmark from "./pages/Bookmark";
 
 function App() {
   return (
-    <div className="bg-darkBlue min-h-[100svh]   text-white">
+    <div className="bg-darkBlue min-h-[100svh]  text-white">
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />

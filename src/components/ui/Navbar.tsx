@@ -1,36 +1,29 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { PiTelevision } from "react-icons/pi";
-import { FaBookmark } from "react-icons/fa6";
-import { MdLocalMovies } from "react-icons/md";
 import { MdMovieCreation } from "react-icons/md";
+import { navBarItems } from "../../constants";
 
 const Navbar = () => {
   const [isOpened, setIsOpened] = useState(false);
 
   return (
-    <div className="md:pt-8 md:h-full relative md:fixed md:top-0 left-5">
+    <div className="md:pt-8 md:h-full relative md:fixed md:top-0 md:left-5 ">
       <div className="md:h-[calc(100svh-2rem)] flex md:flex-col justify-between items-center p-3 md:py-5 bg-semiDarkBlue">
-        <MdMovieCreation className="text-primaryRed w-6 h-6 " />
+        <NavLink to="/">
+          <MdMovieCreation className="text-primaryRed w-6 h-6 " />
+        </NavLink>
         <ul className="md:py-8 flex md:flex-grow md:flex-col md:justify-start justify-center items-center  gap-4 md:gap-9 text-greyishBlue">
-          <NavLink to={"/"}>
-            <li>Home</li>
-          </NavLink>
-          <NavLink to={"/movies"}>
-            <li>
-              <MdLocalMovies className="md:w-[20px] md:h-[20px]" />
-            </li>
-          </NavLink>
-          <NavLink to={"/tv"}>
-            <li>
-              <PiTelevision className="md:w-[20px] md:h-[20px]" />
-            </li>
-          </NavLink>
-          <NavLink to={"/bookmarked"}>
-            <li>
-              <FaBookmark className="md:w-[20px] md:h-[20px]" />
-            </li>
-          </NavLink>
+          {navBarItems.map((element) => (
+            <NavLink
+              key={element.id}
+              to={element.url}
+              className={({ isActive }) =>
+                isActive ? "text-white" : "hover:text-primaryRed"
+              }
+            >
+              <li>{element.name}</li>
+            </NavLink>
+          ))}
         </ul>
         <div
           className="w-6 h-6 rounded-full bg-white cursor-pointer"

@@ -13,3 +13,10 @@ input:-webkit-autofill:focus {
   /* transition: transparent 5000s ease-in-out 0s; */
   color: white;
 }
+
+body {
+  padding: 0;
+  margin: 0;
+  max-width: 1600px;
+  margin: auto;
+}
