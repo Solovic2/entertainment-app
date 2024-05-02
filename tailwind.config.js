@@ -19,9 +19,11 @@ export default {
         bodyM: "15px",
         bodySm: "13px",
       },
-
+      boxShadow: {
+        inner: "inset 13px -35px  50px 0px  #10141e",
+      },
       animation: {
-        scrollRight: "scrollAnimationRight  25s linear infinite alternate  ",
+        scrollRight: "scrollAnimationRight  20s linear infinite alternate  ",
       },
       keyframes: {
         scrollAnimationRight: {

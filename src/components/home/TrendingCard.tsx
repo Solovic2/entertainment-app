@@ -7,6 +7,7 @@ import { PiTelevision } from "react-icons/pi";
 import { MdLocalMovies } from "react-icons/md";
 import { updateBookmark } from "../../state/auth/bookmarkSlice";
 import { basic_imageUrl } from "../../constants";
+import { NavLink } from "react-router-dom";
 
 interface TrendingCard {
   movie: ApiMovie;
@@ -24,9 +25,16 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
     first_air_date,
     release_date,
   } = movie;
+
   const date = first_air_date?.substring(0, 4) || release_date?.substring(0, 4);
+
   const typeMedia =
     (movie_type || media_type) === "tv" ? <PiTelevision /> : <MdLocalMovies />;
+
+  const cardLink: string =
+    (movie_type || media_type) === "tv"
+      ? `${`/tv/${movie.id}`}`
+      : `${`/${movie_type || media_type}/${movie.id}`}`;
 
   const image: string = backdrop_path
     ? basic_imageUrl + backdrop_path
@@ -39,15 +47,17 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
     dispatch(updateBookmark(movie));
   };
   return (
-    <div key={movie.id} className="h-full w-full">
+    <div key={movie.id} className="h-full w-full ">
       <div
         className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg  `}
       >
         <div className="opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
-          <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
-            <FaPlayCircle size={30} color="#fff" />
-            <p className="text-bodyM md:text-headingXs">Play</p>
-          </div>
+          <NavLink to={cardLink}>
+            <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
+              <FaPlayCircle size={30} color="#fff" />
+              <p className="text-bodyM md:text-headingXs">Play</p>
+            </div>
+          </NavLink>
         </div>
         <div className="h-[230px]">
           <img

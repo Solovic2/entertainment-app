@@ -36,7 +36,7 @@ const tvSlice = createSlice({
 });
 
 export const fetchTvMedia = createAsyncThunk(
-  "home/fetchTvMedia",
+  "tv/fetchTvMedia",
   async (search?: string): Promise<any> => {
     let response;
     if (search) {

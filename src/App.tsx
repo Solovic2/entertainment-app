@@ -6,6 +6,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import Movie from "./pages/Movie";
 import TV from "./pages/Tv";
 import Bookmark from "./pages/Bookmark";
+import Details from "./pages/Details";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route element={<Movie />} path="/movies" />
           <Route element={<TV />} path="/tv" />
           <Route element={<Bookmark />} path="/bookmarked" />
+          <Route element={<Details />} path="/:type/:id" />
+
           {/* <Route element={<Home />} path="/" /> */}
         </Route>
 

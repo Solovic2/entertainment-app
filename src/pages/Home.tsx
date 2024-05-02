@@ -27,8 +27,8 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchMedia());
-    // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     dispatch(fetchSearch(searchQuery));
   }, [searchQuery]);

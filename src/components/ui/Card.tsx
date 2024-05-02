@@ -8,6 +8,7 @@ import { basic_imageUrl } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { updateBookmark } from "../../state/auth/bookmarkSlice";
+import { NavLink } from "react-router-dom";
 interface CardProps {
   movie: ApiMovie;
 }
@@ -28,6 +29,11 @@ const Card: FC<CardProps> = ({ movie }) => {
   const typeMedia =
     (movie_type || media_type) === "tv" ? <PiTelevision /> : <MdLocalMovies />;
 
+  const cardLink: string =
+    (movie_type || media_type) === "tv"
+      ? `${`/tv/${movie.id}`}`
+      : `${`/${movie_type || media_type}/${movie.id}`}`;
+
   const image: string = backdrop_path
     ? basic_imageUrl + backdrop_path
     : poster_path
@@ -45,10 +51,12 @@ const Card: FC<CardProps> = ({ movie }) => {
         className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg`}
       >
         <div className="opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
-          <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
-            <FaPlayCircle size={30} color="#fff" />
-            <p className="text-bodyM md:text-headingXs">Play</p>
-          </div>
+          <NavLink to={cardLink}>
+            <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
+              <FaPlayCircle size={30} color="#fff" />
+              <p className="text-bodyM md:text-headingXs">Play</p>
+            </div>
+          </NavLink>
         </div>
         <div className="h-28 md:h-44">
           <img
@@ -82,18 +90,5 @@ const Card: FC<CardProps> = ({ movie }) => {
     </div>
   );
 };
-{
-  /* {isTrending && (
-          <div className={`${isTrending && "absolute bottom-0 p-5"}`}>
-            <div className="text-[12px] opacity-75 flex  gap-2">
-              <p>{date}</p>
-              <p className="capitalize">
-                {typeIcon}
-                {type}
-              </p>
-            </div>
-            <p className="mt-1 text-[15px]">{title}</p>
-          </div>
-        )} */
-}
+
 export default Card;
