@@ -8,10 +8,16 @@ interface CardListProps {
 }
 const CardList: FC<CardListProps> = ({ title, movieList }) => {
   if (movieList.length === 0)
-    return <div className="flex items-center justify-center">No Data...</div>;
+    return (
+      <LayoutCard title={title}>
+        <div className="my-5 flex items-center justify-center ">
+          No {title} movies to show ...
+        </div>
+      </LayoutCard>
+    );
   return (
     <LayoutCard title={title}>
-      <div className="mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+      <div className="mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-y-8 md:gap-x-10 w-full">
         {movieList?.map((movie: ApiMovie) => {
           return (
             <div key={movie.id} className="flex flex-col h-full">

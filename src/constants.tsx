@@ -8,22 +8,22 @@ export const basic_imageUrl = "https://image.tmdb.org/t/p/original/";
 export const navBarItems = [
   {
     id: 0,
-    name: <PiSquaresFourFill className="md:w-[20px] md:h-[20px]" />,
+    name: <PiSquaresFourFill className="md:w-[20px] md:h-[20px]" size={20} />,
     url: "/",
   },
   {
     id: 1,
-    name: <MdLocalMovies className="md:w-[20px] md:h-[20px]" />,
+    name: <MdLocalMovies className="md:w-[20px] md:h-[20px]" size={20} />,
     url: "/movies",
   },
   {
     id: 2,
-    name: <PiTelevision className="md:w-[20px] md:h-[20px]" />,
+    name: <PiTelevision className="md:w-[20px] md:h-[20px]" size={20} />,
     url: "/tv",
   },
   {
     id: 3,
-    name: <FaBookmark className="md:w-[20px] md:h-[20px]" />,
+    name: <FaBookmark className="md:w-[20px] md:h-[20px]" size={20} />,
     url: "/bookmarked",
   },
 ];

@@ -29,7 +29,7 @@ const TV = () => {
   if (loading) return <Loading />;
   if (movieListError) return <></>;
   return (
-    <div className="p-4 md:p-8 md:ml-16 w-full">
+    <div className="p-4 md:p-8 md:ml-24 w-full">
       <SearchInput
         placeholder="Search for TV Series"
         handleChange={handleChange}

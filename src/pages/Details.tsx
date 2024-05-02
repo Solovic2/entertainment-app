@@ -76,7 +76,7 @@ const Details = () => {
 
   if (loading) return <Loading />;
   return (
-    <div className="p-4 md:p-8 md:ml-16 w-full  ">
+    <div className="p-4 md:p-8 md:ml-24 w-full  ">
       <div
         className="bg-cover bg-center h-[448px] shadow-inner bg-opacity-80 "
         style={{

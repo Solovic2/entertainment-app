@@ -24,22 +24,33 @@ const Card: FC<CardProps> = ({ movie }) => {
     media_type,
     first_air_date,
     release_date,
+    adult,
   } = movie;
+
+  // Card Date
   const date = first_air_date?.substring(0, 4) || release_date?.substring(0, 4);
+
+  // Card Media Type
   const typeMedia =
     (movie_type || media_type) === "tv" ? <PiTelevision /> : <MdLocalMovies />;
 
+  // Link Slug For Details
   const cardLink: string =
     (movie_type || media_type) === "tv"
       ? `${`/tv/${movie.id}`}`
       : `${`/${movie_type || media_type}/${movie.id}`}`;
 
+  // Card Image
   const image: string = backdrop_path
     ? basic_imageUrl + backdrop_path
     : poster_path
     ? basic_imageUrl + poster_path
     : "/assets/placeholder-image.png";
 
+  // Adult Type
+  const adultType: string = adult ? "+18" : "PG";
+
+  // Bookmark
   const isBookmarked = bookmarks.find((element) => element.id === movie.id);
   const handleBookmark = () => {
     dispatch(updateBookmark(movie));
@@ -74,17 +85,19 @@ const Card: FC<CardProps> = ({ movie }) => {
       </div>
 
       <div>
-        <div className="text-[11px] md:text-[13px] opacity-75 mt-2 flex  gap-2">
+        <div className="text-[11px] md:text-bodySm opacity-75 mt-2 flex items-center  gap-2">
           <span>{date}</span>
-          <span>.</span>
+          <span className="w-1 h-1 rounded-full bg-white"></span>
           <p className="flex items-center gap-1 capitalize">
             {typeMedia}
             {(movie_type || media_type) === "tv"
               ? "TV"
               : movie_type || media_type}
           </p>
+          <span className="w-1 h-1 rounded-full bg-white"></span>
+          <p>{adultType}</p>
         </div>
-        <p className="text-[14px] ">{title || name}</p>
+        <p className="text-[14px] md:text-headingXs ">{title || name}</p>
       </div>
     </div>
   );

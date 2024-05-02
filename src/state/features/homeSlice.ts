@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { ApiMovie, ApiPayload, HomeState } from "../../types";
+import { ApiPayload, HomeState } from "../../types";
 
 const initialState: HomeState = {
   loading: false,
@@ -56,7 +56,11 @@ const homeSlice = createSlice({
 export const fetchMedia = createAsyncThunk(
   "home/fetchMedia",
   async (): Promise<any> => {
-    const response = await axios.get(requests.fetchTrending);
+    const response = await axios.get(requests.fetchTrending, {
+      params: {
+        include_adult: "true",
+      },
+    });
     const data: Promise<any> = await response.data;
     return data;
   }
@@ -67,7 +71,7 @@ export const fetchSearch = createAsyncThunk(
     const response = await axios.get(requests.fetchSearchHome, {
       params: {
         query: search,
-        include_adult: "false",
+        include_adult: "true",
         language: "en-US",
         page: "1",
       },

@@ -43,13 +43,17 @@ export const fetchTvMedia = createAsyncThunk(
       response = await axios.get(requests.fetchSearchTV, {
         params: {
           query: search,
-          include_adult: "false",
+          include_adult: "true",
           language: "en-US",
           page: "1",
         },
       });
     } else {
-      response = await axios.get(requests.fetchTV);
+      response = await axios.get(requests.fetchTV, {
+        params: {
+          include_adult: "true",
+        },
+      });
     }
     const data: Promise<any> = await response.data;
     return data;

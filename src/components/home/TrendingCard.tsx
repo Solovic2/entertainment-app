@@ -24,24 +24,33 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
     media_type,
     first_air_date,
     release_date,
+    adult,
   } = movie;
 
+  // Card Date
   const date = first_air_date?.substring(0, 4) || release_date?.substring(0, 4);
 
+  // Card Media Type
   const typeMedia =
     (movie_type || media_type) === "tv" ? <PiTelevision /> : <MdLocalMovies />;
 
+  // Link Slug For Details
   const cardLink: string =
     (movie_type || media_type) === "tv"
       ? `${`/tv/${movie.id}`}`
       : `${`/${movie_type || media_type}/${movie.id}`}`;
 
+  // Card Image
   const image: string = backdrop_path
     ? basic_imageUrl + backdrop_path
     : poster_path
     ? basic_imageUrl + poster_path
     : "/assets/placeholder-image.png";
 
+  // Adult Type
+  const adultType: string = adult ? "+18" : "PG";
+
+  // Bookmark
   const isBookmarked = bookmarks.find((element) => element.id === movie.id);
   const handleBookmark = () => {
     dispatch(updateBookmark(movie));
@@ -51,7 +60,7 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
       <div
         className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg  `}
       >
-        <div className="opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
+        <div className="z-40 opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
           <NavLink to={cardLink}>
             <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
               <FaPlayCircle size={30} color="#fff" />
@@ -59,13 +68,16 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
             </div>
           </NavLink>
         </div>
-        <div className="h-[230px]">
+
+        <div className="h-[230px] ">
           <img
             src={image}
-            className="object-cover select-none hover:opacity-30 rounded-lg h-full w-full"
+            className="z-10 object-cover select-none hover:opacity-30 rounded-lg h-full w-full inset-0 bg-gradient-to-b from-transparent to-black"
             alt={name || title}
           />
+          <div className="z-20 absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
         </div>
+
         {/*  Bookmark */}
         <div
           className="absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
@@ -74,18 +86,20 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
           {isBookmarked ? <FaBookmark /> : <FaRegBookmark />}
         </div>
         {/* Put Title inside Card */}
-        <div className="absolute bottom-0 p-5">
-          <div className="text-[12px] opacity-75 flex  gap-2">
+        <div className="z-30 absolute bottom-0 p-5">
+          <div className="text-[12px] md:text-bodyM opacity-75 flex items-center gap-2">
             <span>{date}</span>
-            <span>.</span>
+            <span className="w-1 h-1 rounded-full bg-white"></span>
             <p className="flex items-center gap-1 capitalize">
               {typeMedia}
               {(movie_type || media_type) === "tv"
                 ? "TV"
                 : movie_type || media_type}
             </p>
+            <span className="w-1 h-1 rounded-full bg-white"></span>
+            <p>{adultType}</p>
           </div>
-          <p className="mt-1 text-[15px]">{title}</p>
+          <p className="mt-1 text-bodyM md:text-headingM">{title || name}</p>
         </div>
       </div>
     </div>
