@@ -29,6 +29,11 @@ const Details = () => {
       autoplay: 1,
     },
   };
+  const image: string = movieDetails.backdrop_path
+    ? basic_imageUrl + movieDetails.backdrop_path
+    : movieDetails.poster_path
+    ? basic_imageUrl + movieDetails.poster_path
+    : "/assets/placeholder-image.png";
 
   const showTrailer = () => {
     if (trailerUrl) setTrailerUrl("");
@@ -59,6 +64,7 @@ const Details = () => {
         });
     }
   };
+
   useEffect(() => {
     if (detailError) toast.error(detailError);
     if (trailerErr) toast.error(trailerErr);
@@ -74,17 +80,26 @@ const Details = () => {
       <div
         className="bg-cover bg-center h-[448px] shadow-inner bg-opacity-80 "
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url(${basic_imageUrl}${movieDetails.backdrop_path})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url(${image})`,
         }}
       >
-        <div className="pt-[100px] md:pt-[140px] ml-8 max-w-[250px] md:max-w-[450px]">
+        <div className="pt-[70px] md:pt-[100px] ml-8 max-w-[250px] md:max-w-[450px]">
+          <div className="flex gap-2 flex-wrap select-none mb-1">
+            {movieDetails.genres.map((element) => {
+              return (
+                <div className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full">
+                  {element.name}
+                </div>
+              );
+            })}
+          </div>
           <div className="mb-5 text-[32px] md:text-4xl lg:text-5xl font-bold break-word ">
             {movieDetails.title || movieDetails.name}
           </div>
           <div className="w-28 mb-5 font-bold" onClick={showTrailer}>
             <Button name="Play" />
           </div>
-          <p className="h-20 max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words ">
+          <p className="h-20 max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words  ">
             {movieDetails.overview}
           </p>
         </div>
