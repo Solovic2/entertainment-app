@@ -12,7 +12,6 @@ interface CardProps {
   movie: ApiMovie;
 }
 const Card: FC<CardProps> = ({ movie }) => {
-  const [hover, setHover] = useState(false);
   const { bookmarks } = useSelector((state: RootState) => state.bookmark);
   const dispatch: AppDispatch = useDispatch();
   const {
@@ -41,26 +40,20 @@ const Card: FC<CardProps> = ({ movie }) => {
   };
 
   return (
-    <div
-      className="flex flex-col"
-      onMouseOver={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
+    <div className="flex flex-col">
       <div
         className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg`}
       >
-        {hover && (
-          <div className="absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
-            <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
-              <FaPlayCircle size={30} color="#fff" />
-              <p className="text-bodyM md:text-headingXs">Play</p>
-            </div>
+        <div className="opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
+          <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
+            <FaPlayCircle size={30} color="#fff" />
+            <p className="text-bodyM md:text-headingXs">Play</p>
           </div>
-        )}
+        </div>
         <div className="h-48">
           <img
             src={image}
-            className="object-cover rounded-lg h-full w-full"
+            className="object-cover select-none hover:opacity-30 rounded-lg h-full w-full"
             alt={name || title}
           />
         </div>
