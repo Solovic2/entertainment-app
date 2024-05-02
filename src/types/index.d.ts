@@ -4,10 +4,6 @@ export interface User {
   password: string;
 }
 
-export interface moviesProps {
-  movies: Object[];
-}
-
 export interface HomeState {
   loading: boolean;
   trending: ApiMovie[];

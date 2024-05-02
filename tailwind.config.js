@@ -19,6 +19,16 @@ export default {
         bodyM: "15px",
         bodySm: "13px",
       },
+
+      animation: {
+        scrollRight: "scrollAnimationRight  25s linear infinite alternate  ",
+      },
+      keyframes: {
+        scrollAnimationRight: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],

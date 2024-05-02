@@ -26,7 +26,7 @@ const homeSlice = createSlice({
         fetchMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
-          state.trending = action.payload.results.slice(5);
+          state.trending = action.payload.results.slice(0, 5);
           state.recommending = action.payload.results.slice(-15);
         }
       )

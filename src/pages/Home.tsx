@@ -6,6 +6,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { fetchMedia, fetchSearch } from "../state/features/homeSlice";
 import CardList from "../components/ui/CardList";
 import Loading from "../components/ui/Loading";
+import Trending from "../components/home/Trending";
 
 const Home = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -46,8 +47,10 @@ const Home = () => {
       ) : loading ? (
         <Loading />
       ) : (
-        //Trinding
-        <CardList title="Recommended for you" movieList={recommending} />
+        <>
+          <Trending movieList={trending} />
+          <CardList title="Recommended for you" movieList={recommending} />
+        </>
       )}
     </div>
   );
