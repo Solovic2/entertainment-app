@@ -44,7 +44,6 @@ const Card: FC<CardProps> = ({ movie }) => {
   const handleBookmark = () => {
     dispatch(updateBookmark(movie));
   };
-
   return (
     <div className="flex flex-col">
       <div
