@@ -7,6 +7,7 @@ import Movie from "./pages/Movie";
 import TV from "./pages/Tv";
 import Bookmark from "./pages/Bookmark";
 import Details from "./pages/Details";
+
 function App() {
   return (
     <div className="bg-darkBlue min-h-[100svh]  text-white">
