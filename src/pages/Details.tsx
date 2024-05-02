@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AppDispatch, RootState } from "../state/store";
-import { fetchSpecificMedia } from "../state/features/detailsSlice";
 import { basic_imageUrl } from "../constants";
 import Button from "../components/ui/Button";
 import CardList from "../components/ui/CardList";
@@ -10,18 +7,16 @@ import Loading from "../components/ui/Loading";
 import YouTube, { YouTubeProps } from "react-youtube";
 import movieTrailer from "movie-trailer";
 import { toast } from "react-toastify";
+import { useGetDetailsQuery } from "../state/features/detailsApiSlice";
 const Details = () => {
   const { type, id } = useParams();
   const [trailerUrl, setTrailerUrl] = useState<string>("");
   const [trailerErr, setTrailerError] = useState("");
-  const dispatch: AppDispatch = useDispatch();
-  const { loading, movieDetails, similarMovie, detailError } = useSelector(
-    (state: RootState) => state.details
-  );
   const page = {
     type: type!,
     id: id!,
   };
+  const { data, error, isLoading } = useGetDetailsQuery(page);
   const opts: YouTubeProps["opts"] = {
     height: "390",
     width: "100%",
@@ -29,20 +24,24 @@ const Details = () => {
       autoplay: 1,
     },
   };
-  const image: string = movieDetails.backdrop_path
-    ? basic_imageUrl + movieDetails.backdrop_path
-    : movieDetails.poster_path
-    ? basic_imageUrl + movieDetails.poster_path
+
+  if (!data) return <>No Data</>;
+  const { detailsResult, similarResults } = data;
+
+  const image: string = detailsResult.backdrop_path
+    ? basic_imageUrl + detailsResult.backdrop_path
+    : detailsResult.poster_path
+    ? basic_imageUrl + detailsResult.poster_path
     : "/assets/placeholder-image.png";
 
   const showTrailer = () => {
     if (trailerUrl) setTrailerUrl("");
     else {
       movieTrailer(
-        movieDetails?.name ||
-          movieDetails?.original_name ||
-          movieDetails?.title ||
-          movieDetails?.original_title ||
+        detailsResult?.name ||
+          detailsResult?.original_name ||
+          detailsResult?.title ||
+          detailsResult?.original_title ||
           ""
       )
         .then((url: string | URL) => {
@@ -64,17 +63,8 @@ const Details = () => {
         });
     }
   };
-
-  useEffect(() => {
-    if (detailError) toast.error(detailError);
-    if (trailerErr) toast.error(trailerErr);
-  }, [detailError, trailerErr]);
-
-  useEffect(() => {
-    dispatch(fetchSpecificMedia(page));
-  }, [type, id]);
-
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
+  if (error) return <>Error Occur</>;
   return (
     <div className="p-4 md:p-8 md:ml-16 w-full  ">
       <div
@@ -85,29 +75,38 @@ const Details = () => {
       >
         <div className="pt-[70px] md:pt-[100px] ml-8 max-w-[250px] md:max-w-[450px]">
           <div className="flex gap-2 flex-wrap select-none mb-1">
-            {movieDetails.genres.map((element) => {
+            {detailsResult.genres.map((element) => {
               return (
-                <div className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full">
+                <div
+                  key={element.id}
+                  className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full"
+                >
                   {element.name}
                 </div>
               );
             })}
           </div>
           <div className="mb-5 text-[32px] md:text-4xl lg:text-5xl font-bold break-word ">
-            {movieDetails.title || movieDetails.name}
+            {detailsResult.title || detailsResult.name}
           </div>
           <div className="w-28 mb-5 font-bold" onClick={showTrailer}>
             <Button name="Play" />
           </div>
           <p className="h-20 max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words  ">
-            {movieDetails.overview}
+            {detailsResult.overview}
           </p>
         </div>
       </div>
       {trailerUrl !== "" && (
-        <YouTube videoId={trailerUrl} opts={opts} className="mt-5" />
+        <>
+          {trailerErr ? (
+            <> Error </>
+          ) : (
+            <YouTube videoId={trailerUrl} opts={opts} className="mt-5" />
+          )}
+        </>
       )}
-      <CardList title="Similar" movieList={similarMovie} />
+      <CardList title="Similar" movieList={similarResults} />
     </div>
   );
 };

@@ -1,37 +1,36 @@
 import SearchInput from "../components/ui/SearchInput";
-
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../state/store";
-import { ChangeEventHandler, useEffect, useState } from "react";
-import { fetchMedia, fetchSearch } from "../state/features/homeSlice";
+import { ChangeEventHandler, useState } from "react";
 import CardList from "../components/ui/CardList";
 import Loading from "../components/ui/Loading";
 import Trending from "../components/home/Trending";
+import {
+  useGetSearchResultsQuery,
+  useGetTrendingQuery,
+} from "../state/features/homeApiSlice";
 
 const Home = () => {
-  const dispatch: AppDispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
+
   const {
-    loading,
-    trending,
-    recommending,
-    searchResults,
-    trendingError,
-    recommendingError,
-    searchError,
-  } = useSelector((state: RootState) => state.home);
+    data,
+    error: trendingError,
+    isLoading: trendingLoading,
+  } = useGetTrendingQuery("api");
+
+  const {
+    data: searchResult,
+    error: searchResultError,
+    isLoading: searchResultLoading,
+  } = useGetSearchResultsQuery(searchQuery);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  useEffect(() => {
-    dispatch(fetchMedia());
-  }, []);
+  if (searchResultLoading || trendingLoading) return <Loading />;
+  if (!data) return <>No Data</>;
 
-  useEffect(() => {
-    dispatch(fetchSearch(searchQuery));
-  }, [searchQuery]);
+  const { trending, recommending } = data;
 
   return (
     <div className="p-4 md:p-8 md:ml-16 w-full ">
@@ -41,15 +40,13 @@ const Home = () => {
       />
       {searchQuery ? (
         <CardList
-          title={`Found ${searchResults.length} results for '${searchQuery}'`}
-          movieList={searchResults}
+          title={`Found ${searchResult!.length} results for '${searchQuery}'`}
+          movieList={searchResult!}
         />
-      ) : loading ? (
-        <Loading />
       ) : (
         <>
-          <Trending movieList={trending} />
-          <CardList title="Recommended for you" movieList={recommending} />
+          <Trending movieList={trending!} />
+          <CardList title="Recommended for you" movieList={recommending!} />
         </>
       )}
     </div>
