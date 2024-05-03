@@ -70,7 +70,7 @@ const Card: FC<CardProps> = ({ movie }) => {
               </div>
             </div>
             {/* </NavLink> */}
-            <div className="h-28 md:h-44">
+            <div className="h-28 sm:h-36 md:h-44">
               <img
                 src={image}
                 className="object-cover select-none hover:opacity-30 rounded-lg h-full w-full"
