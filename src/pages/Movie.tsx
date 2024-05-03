@@ -5,7 +5,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { fetchMovieMedia } from "../state/features/movieSlice";
 import CardList from "../components/ui/CardList";
 import Loading from "../components/ui/Loading";
-import { toast } from "react-toastify";
+import Error from "../components/ui/Error";
 
 const Movies = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -22,12 +22,10 @@ const Movies = () => {
     dispatch(fetchMovieMedia(searchQuery));
   }, [searchQuery]);
 
-  useEffect(() => {
-    if (movieListError) toast.error(movieListError);
-  }, [movieListError]);
-
+  // Check If loading or Error
   if (loading) return <Loading />;
-  if (movieListError) return <></>;
+  if (movieListError) return <Error message={movieListError} />;
+
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full">
       <SearchInput

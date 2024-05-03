@@ -5,6 +5,8 @@ import { AppDispatch, RootState } from "../../state/store";
 import { FaBookmark, FaPlayCircle, FaRegBookmark } from "react-icons/fa";
 import { PiTelevision } from "react-icons/pi";
 import { MdLocalMovies } from "react-icons/md";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+
 import { updateBookmark } from "../../state/auth/bookmarkSlice";
 import { basic_imageUrl } from "../../constants";
 import { NavLink } from "react-router-dom";
@@ -62,9 +64,9 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
       >
         <div className="z-40 opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
           <NavLink to={cardLink}>
-            <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
-              <FaPlayCircle size={30} color="#fff" />
-              <p className="text-bodyM md:text-headingXs">Play</p>
+            <div className="flex justify-center items-center gap-2 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
+              <IoIosInformationCircleOutline size={30} color="#fff" />
+              <p className="text-bodyM md:text-headingXs">More Info</p>
             </div>
           </NavLink>
         </div>

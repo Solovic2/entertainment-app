@@ -9,19 +9,26 @@ import CardList from "../components/ui/CardList";
 import Loading from "../components/ui/Loading";
 import YouTube, { YouTubeProps } from "react-youtube";
 import movieTrailer from "movie-trailer";
-import { toast } from "react-toastify";
+import Expanded from "../components/Details/Expanded";
+import Error from "../components/ui/Error";
+import ReactModal from "../components/ui/Modal";
 const Details = () => {
   const { type, id } = useParams();
   const [trailerUrl, setTrailerUrl] = useState<string>("");
   const [trailerErr, setTrailerError] = useState("");
+
   const dispatch: AppDispatch = useDispatch();
   const { loading, movieDetails, similarMovie, detailError } = useSelector(
     (state: RootState) => state.details
   );
+
+  // Page Params
   const page = {
     type: type!,
     id: id!,
   };
+
+  // Options of Youtube
   const opts: YouTubeProps["opts"] = {
     height: "390",
     width: "100%",
@@ -29,12 +36,14 @@ const Details = () => {
       autoplay: 1,
     },
   };
+  // Movie Image
   const image: string = movieDetails.backdrop_path
     ? basic_imageUrl + movieDetails.backdrop_path
     : movieDetails.poster_path
     ? basic_imageUrl + movieDetails.poster_path
     : "/assets/placeholder-image.png";
 
+  // Handle Trailer
   const showTrailer = () => {
     if (trailerUrl) setTrailerUrl("");
     else {
@@ -50,8 +59,6 @@ const Details = () => {
             const urlParams: Record<string, any> = new URLSearchParams(
               new URL(url).search
             );
-            console.log(urlParams.get("v"));
-
             setTrailerUrl(urlParams.get("v"));
           } else {
             setTrailerError("Trailer not Found for this " + type);
@@ -66,15 +73,12 @@ const Details = () => {
   };
 
   useEffect(() => {
-    if (detailError) toast.error(detailError);
-    if (trailerErr) toast.error(trailerErr);
-  }, [detailError, trailerErr]);
-
-  useEffect(() => {
     dispatch(fetchSpecificMedia(page));
   }, [type, id]);
 
   if (loading) return <Loading />;
+  if (detailError) return <Error message={detailError} />;
+  if (trailerErr) return <Error message={trailerErr} />;
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full  ">
       <div
@@ -83,29 +87,33 @@ const Details = () => {
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url(${image})`,
         }}
       >
-        <div className="pt-[70px] md:pt-[100px] ml-8 max-w-[250px] md:max-w-[450px]">
+        <div className="pt-[70px] md:pt-[80px] ml-8 max-w-[250px] md:max-w-[450px]">
           <div className="flex gap-2 flex-wrap select-none mb-1">
             {movieDetails.genres.map((element) => {
               return (
-                <div className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full">
+                <div
+                  key={element.id}
+                  className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full"
+                >
                   {element.name}
                 </div>
               );
             })}
           </div>
-          <div className="mb-5 text-[32px] md:text-4xl lg:text-5xl font-bold break-word ">
+          <div className="mb-5 text-2xl md:text-4xl lg:text-5xl font-bold break-word ">
             {movieDetails.title || movieDetails.name}
           </div>
           <div className="w-28 mb-5 font-bold" onClick={showTrailer}>
             <Button name="Play" />
           </div>
-          <p className="h-20 max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words  ">
-            {movieDetails.overview}
-          </p>
+          <Expanded text={movieDetails.overview} />
         </div>
       </div>
+
       {trailerUrl !== "" && (
-        <YouTube videoId={trailerUrl} opts={opts} className="mt-5" />
+        <ReactModal setTrailerUrl={setTrailerUrl}>
+          <YouTube videoId={trailerUrl} opts={opts} className="mt-5" />
+        </ReactModal>
       )}
       <CardList title="Similar" movieList={similarMovie} />
     </div>

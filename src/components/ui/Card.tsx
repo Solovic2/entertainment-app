@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { FaPlayCircle } from "react-icons/fa";
 import { PiTelevision } from "react-icons/pi";
 import { MdLocalMovies } from "react-icons/md";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import { ApiMovie } from "../../types";
 import { basic_imageUrl } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,9 +62,9 @@ const Card: FC<CardProps> = ({ movie }) => {
       >
         <div className="opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
           <NavLink to={cardLink}>
-            <div className="flex justify-center items-center gap-3 md:gap-4 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
-              <FaPlayCircle size={30} color="#fff" />
-              <p className="text-bodyM md:text-headingXs">Play</p>
+            <div className="flex justify-center items-center gap-2 opacity-100 bg-greyishBlue py-2 px-3 md:py-3 md:px-4 rounded-full">
+              <IoIosInformationCircleOutline size={30} color="#fff" />
+              <p className="text-bodyM md:text-headingXs">More Info</p>
             </div>
           </NavLink>
         </div>
