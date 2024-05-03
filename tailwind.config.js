@@ -11,6 +11,8 @@ export default {
       },
       fontFamily: {
         outfit: ["Outfit", "sans-serif"],
+        outfitLight: ["outfit-light", "sans-serif"],
+        outfitMedium: ["outfit-medium", "sans-serif"],
       },
       fontSize: {
         headingLg: "32px",

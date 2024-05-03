@@ -11,7 +11,7 @@ const CardList: FC<CardListProps> = ({ title, movieList }) => {
     return (
       <LayoutCard title={title}>
         <div className="my-5 flex items-center justify-center ">
-          No {title} movies to show ...
+          No movies to show ...
         </div>
       </LayoutCard>
     );

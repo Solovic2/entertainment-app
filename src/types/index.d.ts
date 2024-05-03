@@ -12,11 +12,16 @@ export interface HomeState {
   trendingError: string;
   recommendingError: string;
   searchError: string;
+  searchLoading: boolean;
 }
 export interface MovieState {
   loading: boolean;
   movieList: ApiMovie[];
+  searchResults: ApiMovie[];
+  searchError: string;
   movieListError: string;
+  page: number;
+  searchLoading: boolean;
 }
 
 export interface ApiPayload {

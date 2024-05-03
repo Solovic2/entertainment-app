@@ -15,7 +15,6 @@ const addToLocalStorage = (newItem: ApiMovie) => {
   if (bookmarks !== null) {
     const parsedBookmarks: ApiMovie[] = JSON.parse(bookmarks);
     const items = [...parsedBookmarks, newItem];
-    console.log(items);
 
     localStorage.setItem("bookmarks", JSON.stringify(items));
   }

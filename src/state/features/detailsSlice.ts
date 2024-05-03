@@ -37,8 +37,6 @@ const detailsSlice = createSlice({
         fetchSpecificMedia.fulfilled,
         (state, action: PayloadAction<DetailsData>) => {
           state.loading = false;
-          console.log(action.payload);
-
           state.movieDetails = action.payload.data;
           state.similarMovie = action.payload.similarData;
         }
@@ -61,8 +59,6 @@ export const fetchSpecificMedia = createAsyncThunk(
     });
 
     const data: any = await Promise.all([response, similar]);
-    console.log(data);
-
     const results = {
       data: data[0]?.data,
       similarData: data[1]?.data.results.map((element: ApiMovie) => {

@@ -6,7 +6,9 @@ interface LayoutCardProps {
 const LayoutCard = ({ title, children }: LayoutCardProps) => {
   return (
     <div className="mt-9 w-[100%]">
-      <div className="text-[20px] md:text-headingLg">{title}</div>
+      <div className="text-[20px] md:text-headingLg font-outfitLight">
+        {title}
+      </div>
       {children}
     </div>
   );

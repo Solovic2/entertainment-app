@@ -58,51 +58,53 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
     dispatch(updateBookmark(movie));
   };
   return (
-    <div key={movie.id} className="h-full w-full ">
-      <div
-        className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg  `}
-      >
-        <div className="z-40 opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
-          <NavLink to={cardLink}>
+    <div key={movie.id} className="relative h-full w-full ">
+      <NavLink to={cardLink}>
+        <div
+          className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg  `}
+        >
+          <div className="z-40 opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
             <div className="flex justify-center items-center gap-2 opacity-100 bg-greyishBlue py-3 px-4 rounded-full">
               <IoIosInformationCircleOutline size={30} color="#fff" />
               <p className="text-bodyM md:text-headingXs">More Info</p>
             </div>
-          </NavLink>
-        </div>
-
-        <div className="h-[230px] ">
-          <img
-            src={image}
-            className="z-10 object-cover select-none hover:opacity-30 rounded-lg h-full w-full inset-0 bg-gradient-to-b from-transparent to-black"
-            alt={name || title}
-          />
-          <div className="z-20 absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
-        </div>
-
-        {/*  Bookmark */}
-        <div
-          className="absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
-          onClick={handleBookmark}
-        >
-          {isBookmarked ? <FaBookmark /> : <FaRegBookmark />}
-        </div>
-        {/* Put Title inside Card */}
-        <div className="z-30 absolute bottom-0 p-5">
-          <div className="text-[12px] md:text-bodyM opacity-75 flex items-center gap-2">
-            <span>{date}</span>
-            <span className="w-1 h-1 rounded-full bg-white"></span>
-            <p className="flex items-center gap-1 capitalize">
-              {typeMedia}
-              {(movie_type || media_type) === "tv"
-                ? "TV"
-                : movie_type || media_type}
-            </p>
-            <span className="w-1 h-1 rounded-full bg-white"></span>
-            <p>{adultType}</p>
           </div>
-          <p className="mt-1 text-bodyM md:text-headingM">{title || name}</p>
+
+          <div className="h-[230px] ">
+            <img
+              src={image}
+              className="z-10 object-cover select-none hover:opacity-30 rounded-lg h-full w-full inset-0 bg-gradient-to-b from-transparent to-black"
+              alt={name || title}
+            />
+            <div className="z-20 absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
+          </div>
+
+          {/* Put Title inside Card */}
+          <div className="z-30 absolute bottom-0 p-5">
+            <div className="text-[12px] md:text-bodyM opacity-75 flex items-center gap-2 font-outfitLight ">
+              <span>{date}</span>
+              <span className="w-1 h-1 rounded-full bg-white"></span>
+              <p className="flex items-center gap-1 capitalize ">
+                {typeMedia}
+                {(movie_type || media_type) === "tv"
+                  ? "TV"
+                  : movie_type || media_type}
+              </p>
+              <span className="w-1 h-1 rounded-full bg-white"></span>
+              <p>{adultType}</p>
+            </div>
+            <p className="mt-1 text-bodyM md:text-headingM font-outfitMedium">
+              {title || name}
+            </p>
+          </div>
         </div>
+      </NavLink>
+      {/*  Bookmark */}
+      <div
+        className="z-50 absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
+        onClick={handleBookmark}
+      >
+        {isBookmarked ? <FaBookmark /> : <FaRegBookmark />}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ const initialState: HomeState = {
   searchResults: [],
   trendingError: "",
   recommendingError: "",
+  searchLoading: false,
   searchError: "",
 };
 
@@ -37,17 +38,17 @@ const homeSlice = createSlice({
       });
     builder
       .addCase(fetchSearch.pending, (state) => {
-        state.loading = true;
+        state.searchLoading = true;
       })
       .addCase(
         fetchSearch.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
-          state.loading = false;
+          state.searchLoading = false;
           state.searchResults = action.payload.results;
         }
       )
       .addCase(fetchSearch.rejected, (state) => {
-        state.loading = false;
+        state.searchLoading = false;
         state.searchError = "Error Fetching Search";
       });
   },

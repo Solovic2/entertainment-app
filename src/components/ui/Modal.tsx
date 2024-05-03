@@ -11,18 +11,6 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
     setOpen(false);
     setTrailerUrl("");
   };
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      width: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "black",
-    },
-  };
   return (
     <>
       <Modal
@@ -42,7 +30,7 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
           },
           content: {
             position: "relative",
-            width: "100%",
+            width: "85%",
             top: "0px",
             left: "0px",
             right: "0px",

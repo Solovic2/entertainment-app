@@ -20,6 +20,14 @@ body {
   max-width: 1600px;
   margin: auto;
 }
+@font-face {
+  font-family: "outfit-light";
+  src: url("/src/assets/fonts/Outfit-Light.ttf");
+}
+@font-face {
+  font-family: "outfit-medium";
+  src: url("/src/assets/fonts/Outfit-Medium.ttf");
+}
 @layer utilities {
   .pause {
     animation-play-state: paused;
