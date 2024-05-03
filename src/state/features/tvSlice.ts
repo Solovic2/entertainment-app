@@ -58,12 +58,12 @@ const tvSlice = createSlice({
 
 export const fetchTvMedia = createAsyncThunk(
   "tv/fetchTvMedia",
-  async (): Promise<any> => {
+  async (page: number): Promise<any> => {
     const response = await axios.get(requests.fetchTV, {
       params: {
         include_adult: "true",
         language: "en-US",
-        page: "1",
+        page: page,
       },
     });
     const data: Promise<any> = await response.data;

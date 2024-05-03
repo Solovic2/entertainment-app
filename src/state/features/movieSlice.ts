@@ -68,12 +68,12 @@ const movieSlice = createSlice({
 
 export const fetchMovieMedia = createAsyncThunk(
   "movie/fetchMovieMedia",
-  async (): Promise<any> => {
+  async (page: number): Promise<any> => {
     const response = await axios.get(requests.fetchMovies, {
       params: {
         include_adult: "true",
         language: "en-US",
-        page: 1,
+        page: page + 1,
       },
     });
 

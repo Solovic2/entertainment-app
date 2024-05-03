@@ -12,6 +12,7 @@ import CardList from "../components/ui/CardList";
 import Loading from "../components/ui/Loading";
 import Error from "../components/ui/Error";
 import { useSearchParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const TV = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -22,6 +23,7 @@ const TV = () => {
     loading,
     movieList,
     movieListError,
+    page,
     searchResults,
     searchError,
     searchLoading,
@@ -30,7 +32,9 @@ const TV = () => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearchQuery(e.target.value);
   };
-
+  const handlePageChange = (selectedItem: { selected: number }) => {
+    dispatch(fetchTvMedia(selectedItem.selected + 1));
+  };
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     const { value } = e.currentTarget;
     if (e.key === "Enter") {
@@ -45,7 +49,7 @@ const TV = () => {
 
   // Fetch TV Series
   useEffect(() => {
-    dispatch(fetchTvMedia());
+    dispatch(fetchTvMedia(1));
   }, [dispatch]);
 
   // Render Content
@@ -80,6 +84,19 @@ const TV = () => {
         handleKeyDown={handleKeyDown}
       />
       {renderContent()}
+      {page > 0 && (
+        <ReactPaginate
+          pageCount={500}
+          onPageChange={handlePageChange}
+          initialPage={0}
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          className="mt-5 flex items-center justify-center gap-5 text-white"
+          pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
+          activeClassName=" activeClassName"
+        />
+      )}
     </div>
   );
 };

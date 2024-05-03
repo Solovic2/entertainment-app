@@ -19,6 +19,7 @@ import Loading from "../components/ui/Loading";
 import Error from "../components/ui/Error";
 import Button from "../components/ui/Button";
 import { useSearchParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const Movies = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -44,15 +45,20 @@ const Movies = () => {
     }
   };
 
+  const handlePageChange = (selectedItem: { selected: number }) => {
+    dispatch(fetchMovieMedia(selectedItem.selected + 1));
+  };
   // Fetch movies based on search params
   useEffect(() => {
-    dispatch(fetchSearchMedia(searchParams.get("q")!));
+    if (searchParams.get("q"))
+      dispatch(fetchSearchMedia(searchParams.get("q")!));
   }, [dispatch, searchParams]);
 
   // Fetch Movies
   useEffect(() => {
-    dispatch(fetchMovieMedia());
+    dispatch(fetchMovieMedia(1));
   }, [dispatch]);
+  console.log("S");
 
   // Render Content
   const renderContent = () => {
@@ -86,6 +92,20 @@ const Movies = () => {
         handleKeyDown={handleKeyDown}
       />
       {renderContent()}
+      {page > 0 && (
+        <ReactPaginate
+          pageCount={500}
+          onPageChange={handlePageChange}
+          initialPage={0}
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          className="mt-5 flex items-center justify-center gap-5 text-white"
+          pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
+          activeClassName=" activeClassName"
+          activeLinkClassName="w-full h-full"
+        />
+      )}
 
       {/* <div className="w-fit flex items-center justify-center  mx-auto ">
           <Button name="Load more" onClick={handleLoadMore} />

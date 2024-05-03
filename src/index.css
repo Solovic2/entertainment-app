@@ -20,6 +20,9 @@ body {
   max-width: 1600px;
   margin: auto;
 }
+.activeClassName {
+  background-color: #fc4747;
+}
 @font-face {
   font-family: "outfit-light";
   src: url("/src/assets/fonts/Outfit-Light.ttf");
