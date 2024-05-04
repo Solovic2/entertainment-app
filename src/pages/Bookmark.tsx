@@ -48,10 +48,10 @@ const Bookmark = () => {
       ) : bookmarks ? (
         <>
           {bookmarksMovies.length > 0 && (
-            <CardList title="Bookmarks Movies" movieList={bookmarksMovies} />
+            <CardList title="Movie Bookmarks" movieList={bookmarksMovies} />
           )}
           {bookmarksTv.length > 0 && (
-            <CardList title="Bookmarks TV" movieList={bookmarksTv} />
+            <CardList title="TV Series Bookmarks" movieList={bookmarksTv} />
           )}
         </>
       ) : (

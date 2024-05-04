@@ -10,6 +10,7 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { updateBookmark } from "../../state/auth/bookmarkSlice";
 import { basic_imageUrl } from "../../constants";
 import { NavLink } from "react-router-dom";
+import Image from "../ui/Image";
 
 interface TrendingCard {
   movie: ApiMovie;
@@ -71,11 +72,12 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
           </div>
 
           <div className="h-[230px] ">
-            <img
+            <Image
               src={image}
               className="z-10 object-cover select-none hover:opacity-30 rounded-lg h-full w-full inset-0 bg-gradient-to-b from-transparent to-black"
               alt={name || title}
             />
+
             <div className="z-20 absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
           </div>
 
