@@ -21,11 +21,6 @@ export const navBarItems = [
     name: <PiTelevision className="text-xl md:text-2xl" />,
     url: "/tv",
   },
-  {
-    id: 3,
-    name: <FaBookmark className="text-xl md:text-2xl" />,
-    url: "/bookmarked",
-  },
 ];
 
 export const initialMovieDetails: ApiDetails = {

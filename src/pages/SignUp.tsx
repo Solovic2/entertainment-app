@@ -9,7 +9,6 @@ const SignUp = () => {
     const formData = Object.fromEntries(
       new FormData(e.currentTarget)
     ) as Record<string, string>;
-    console.log(formData);
   };
   return (
     <div>

@@ -1,22 +1,26 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { ApiMovie } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
-import { FaBookmark, FaPlayCircle, FaRegBookmark } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { PiTelevision } from "react-icons/pi";
 import { MdLocalMovies } from "react-icons/md";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-
-import { updateBookmark } from "../../state/auth/bookmarkSlice";
 import { basic_imageUrl } from "../../constants";
 import { NavLink } from "react-router-dom";
 import Image from "../ui/Image";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { addFavorite } from "../../state/auth/bookmarkSlice";
 interface TrendingCard {
   movie: ApiMovie;
 }
 const TrendingCard: FC<TrendingCard> = ({ movie }) => {
-  const { bookmarks } = useSelector((state: RootState) => state.bookmark);
+  const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
+  const { bookmarksMovies, bookmarksTV } = useSelector(
+    (state: RootState) => state.bookmark
+  );
+  const { sessionId } = useSelector((state: RootState) => state.auth);
   const dispatch: AppDispatch = useDispatch();
   const {
     name,
@@ -53,10 +57,29 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
   // Adult Type
   const adultType: string = adult ? "+18" : "PG";
 
-  // Bookmark
-  const isBookmarked = bookmarks.find((element) => element.id === movie.id);
+  // // Bookmark
+  let bookmarkedCard;
+  if ((movie.movie_type || movie.media_type) === "tv") {
+    bookmarkedCard = bookmarksTV.find((element) => element.id === movie.id);
+  } else {
+    bookmarkedCard = bookmarksMovies.find((element) => element.id === movie.id);
+  }
   const handleBookmark = () => {
-    dispatch(updateBookmark(movie));
+    if (sessionId) {
+      const params = {
+        movie_type: movie.movie_type || movie.media_type,
+        id: movie.id,
+        sessionId: sessionId,
+      };
+      if (!isBookmarkClicked && !bookmarkedCard) {
+        dispatch(addFavorite(params));
+        setIsBookmarkClicked(true);
+      } else {
+        toast.warning(
+          `You can't undo bookmarked ${movie.movie_type || movie.media_type}`
+        );
+      }
+    } else toast.warning(`Please login first to do this action`);
   };
   return (
     <div key={movie.id} className="relative h-full w-full ">
@@ -106,7 +129,11 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
         className="z-50 absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
         onClick={handleBookmark}
       >
-        {isBookmarked ? <FaBookmark /> : <FaRegBookmark />}
+        {bookmarkedCard || isBookmarkClicked ? (
+          <FaBookmark />
+        ) : (
+          <FaRegBookmark />
+        )}
       </div>
     </div>
   );

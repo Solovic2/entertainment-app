@@ -27,6 +27,7 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "rgba(255, 255, 255, 0.75)",
+            zIndex: 1000,
           },
           content: {
             position: "relative",

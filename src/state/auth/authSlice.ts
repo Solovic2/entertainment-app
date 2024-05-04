@@ -1,16 +1,30 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
-import axios from "axios";
 import { User } from "../../types";
+import axios from "../../api/axios";
 
 interface AuthState {
   user: User | null;
-  accessToken: string | null;
+  requestToken: string;
+  sessionId: string;
+  error: boolean;
+  loading: boolean;
 }
-
+interface RequestTokenPayload {
+  success: boolean;
+  request_token: string;
+  expires_at: string;
+}
+interface SessionIdPayload {
+  success: boolean;
+  session_id: string;
+}
 const initialState: AuthState = {
   user: null,
-  accessToken: null,
+  requestToken: "",
+  sessionId: localStorage.getItem("sessionId") || "",
+  error: false,
+  loading: false,
 };
 
 const authSlice = createSlice({
@@ -18,35 +32,79 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setAuth: (state, action) => {
-      const { user, accessToken } = action.payload;
+      const { user, requestToken } = action.payload;
       state.user = user;
-      state.accessToken = accessToken;
+      state.requestToken = requestToken;
     },
     logout: (state) => {
       state.user = null;
-      state.accessToken = null;
+      state.requestToken = "";
+      state.sessionId = "";
+      state.error = false;
+      state.loading = false;
+      localStorage.removeItem("sessionId");
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, () => {
-        console.log("incrementAsync.pending");
+      .addCase(loginUser.pending, (state) => {
+        console.log("loginUser.pending");
+        state.loading = true;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<string>) => {
-        state.accessToken = action.payload;
+      .addCase(
+        loginUser.fulfilled,
+        (state, action: PayloadAction<RequestTokenPayload>) => {
+          state.requestToken = action.payload.request_token;
+          state.loading = false;
+        }
+      )
+      .addCase(loginUser.rejected, (state) => {
+        state.error = true;
+        state.loading = false;
+      });
+    builder
+      .addCase(createSessionID.pending, (state) => {
+        console.log("createSessionID.pending");
+        state.loading = true;
+      })
+      .addCase(
+        createSessionID.fulfilled,
+        (state, action: PayloadAction<SessionIdPayload>) => {
+          const session_id: string = action.payload.session_id;
+          state.sessionId = session_id;
+          localStorage.setItem("sessionId", session_id);
+          state.loading = false;
+        }
+      )
+      .addCase(createSessionID.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
       });
   },
 });
 
-export const loginUser = createAsyncThunk("auth/login", async () => {
-  const response = await axios.get(requests.createRequestToken, {
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MzhhODY5NTdjMGUwNTYyMmU1NDgxNjY4YjJhZTEwOCIsInN1YiI6IjY1ODE0OWI5MDA1MDhhMDlhNTE2MWJiOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xpNVfvHot6tvSygGl653pCIQIY_hNZqmjWlyF4Z_ar0",
-    },
-  });
+export const createSessionID = createAsyncThunk(
+  "auth/createSessionID",
+  async (request_token: string) => {
+    const response = await axios.post(requests.createSessionId, {
+      request_token: request_token,
+    });
+    const data = await response.data;
+    return data;
+  }
+);
+export const loginUser = createAsyncThunk("auth/loginUser", async () => {
+  const response = await axios.get(requests.createRequestToken);
   const data = await response.data;
+  if (data.success) {
+    const validateToken = await axios.post(requests.validateRequestToken, {
+      username: import.meta.env.VITE_USERNAME,
+      password: import.meta.env.VITE_PASSWORD,
+      request_token: data.request_token,
+    });
+    const validateTokenData = await validateToken.data;
+    return validateTokenData;
+  }
   return data;
 });
 

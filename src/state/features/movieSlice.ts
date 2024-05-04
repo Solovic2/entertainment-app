@@ -103,5 +103,28 @@ export const fetchSearchMedia = createAsyncThunk(
   }
 );
 
+// export const fetchMedia = createAsyncThunk(
+//   "movie/fetchMedia",
+//   async ({ search, page }: fetchParams): Promise<any> => {
+//     let response;
+//     let params = {
+//       page: 1,
+//       include_adult: "false",
+//       language: "en-US",
+//     };
+//     if (search) {
+//       params.query = search;
+//     }
+//     if (page) {
+//       params.page = page;
+//     }
+//     response = await axios.get(requests.fetchSearchMovies, {
+//       params,
+//     });
+//     const data: Promise<any> = await response.data;
+//     return data;
+//   }
+// );
+
 export const { incrementPage } = movieSlice.actions;
 export default movieSlice.reducer;

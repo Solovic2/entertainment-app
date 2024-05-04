@@ -16,7 +16,7 @@ export interface HomeState {
 }
 export interface fetchParams {
   search?: string;
-  page: number;
+  page?: number;
 }
 
 export interface MovieState {

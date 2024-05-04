@@ -1,36 +1,43 @@
-import { FormEvent, FormEventHandler } from "react";
+import { FormEvent, FormEventHandler, useEffect } from "react";
 import RegistrationForm from "../components/RegistrationForm";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../state/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createSessionID, loginUser } from "../state/auth/authSlice";
+import { AppDispatch, RootState } from "../state/store";
+import Error from "../components/ui/Error";
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
+  const { sessionId, requestToken, error, loading } = useSelector(
+    (state: RootState) => state.auth
+  );
+
   const handleSubmit: FormEventHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = Object.fromEntries(
       new FormData(e.currentTarget)
     ) as Record<string, string>;
-    console.log(formData);
-    dispatch(loginUser()).then((res) => {
-      if (res.payload) {
-        window.location.href = `https://www.themoviedb.org/authenticate/${res?.payload?.request_token}?redirect_to=http://localhost:5173/
-        `;
-      }
-    });
-
-    // navigate("/", { replace: true });
+    dispatch(loginUser());
   };
+  useEffect(() => {
+    if (requestToken) dispatch(createSessionID(requestToken));
+  }, [requestToken]);
+
+  useEffect(() => {
+    if (sessionId) navigate("/", { replace: true });
+  }, [sessionId]);
+
+  if (error) return <Error message="Error When Login " />;
   return (
     <div>
       <RegistrationForm
         title="Login"
         footer={{
           title: "Sign Up",
-          linkTo: "/sign-up",
+          linkTo: "https://www.themoviedb.org/signup",
           body: "Don't have an account?",
         }}
       >
@@ -40,7 +47,10 @@ const Login = () => {
         >
           <Input name="email" type="email" placeholder="Email address" />
           <Input name="password" type="password" placeholder="Password" />
-          <Button name="Login to your account" />
+          <Button
+            name="Login to your account"
+            disabled={loading ? true : false}
+          />
         </form>
       </RegistrationForm>
     </div>

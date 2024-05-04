@@ -1,13 +1,23 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { MouseEventHandler, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { MdMovieCreation } from "react-icons/md";
 import { navBarItems } from "../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state/store";
+import { FaBookmark } from "react-icons/fa6";
+import { logout } from "../../state/auth/authSlice";
 
 const Navbar = () => {
   const [isOpened, setIsOpened] = useState(false);
-
+  const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const { sessionId } = useSelector((state: RootState) => state.auth);
+  const logOut: MouseEventHandler<HTMLDivElement> = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
   return (
-    <div className="md:pt-8 md:h-full relative md:fixed md:top-0 rounded-xl ">
+    <div className="md:pt-8 md:h-full  md:fixed md:top-0 rounded-xl ">
       <div className="md:h-[calc(100svh-3rem)] flex md:flex-col justify-between items-center p-3 md:py-5 md:px-9 bg-semiDarkBlue rounded-lg">
         <NavLink to="/">
           <MdMovieCreation className="text-primaryRed text-xl md:text-2xl" />
@@ -24,18 +34,39 @@ const Navbar = () => {
               <li>{element.name}</li>
             </NavLink>
           ))}
+          {sessionId && (
+            <NavLink
+              to="/bookmarked"
+              className={({ isActive }) =>
+                isActive ? "text-white" : "hover:text-primaryRed"
+              }
+            >
+              <FaBookmark className="text-xl md:text-2xl" />
+            </NavLink>
+          )}
         </ul>
         <div
-          className="w-6 h-6 rounded-full bg-white cursor-pointer"
+          className="w-6 h-6 rounded-full bg-white cursor-pointer select-none"
           onClick={() => setIsOpened((prev) => !prev)}
         ></div>
       </div>
       {isOpened && (
-        <div className="absolute right-0 md:left-16 md:bottom-1  bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto py-2 px-3">
-          <NavLink to={"/login"}>
-            <p className="hover:text-primaryRed">Logout</p>
-          </NavLink>
-        </div>
+        <>
+          {sessionId ? (
+            <div
+              className="absolute right-0 md:left-0 md:bottom-20   bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto py-2 px-3 text-center"
+              onClick={logOut}
+            >
+              <p className="hover:text-primaryRed">Logout</p>
+            </div>
+          ) : (
+            <NavLink to={"/login"}>
+              <div className="absolute right-0 md:left-0 md:bottom-20  bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto text-center py-2 px-3">
+                <p className="hover:text-primaryRed">Login</p>
+              </div>
+            </NavLink>
+          )}
+        </>
       )}
     </div>
   );
