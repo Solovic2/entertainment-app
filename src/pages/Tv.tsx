@@ -16,41 +16,44 @@ import ReactPaginate from "react-paginate";
 
 const TV = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const {
     loading,
     movieList,
     movieListError,
-    page,
     searchResults,
     searchError,
     searchLoading,
   } = useSelector((state: RootState) => state.tv);
+  const [searchParams, setSearchParams] = useSearchParams({ page: "1" });
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setSearchQuery(e.target.value);
-  };
-  const handlePageChange = (selectedItem: { selected: number }) => {
-    dispatch(fetchTvMedia(selectedItem.selected + 1));
-  };
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     const { value } = e.currentTarget;
     if (e.key === "Enter") {
-      setSearchParams({ q: value }, { replace: true });
+      if (value === "") setSearchParams({}, { replace: true });
+      else setSearchParams({ page: "1", q: value }, { replace: true });
     }
   };
 
-  // Fetch movies based on search params
-  useEffect(() => {
-    dispatch(fetchSearchTV(searchParams.get("q")!));
-  }, [dispatch, searchParams]);
+  const handlePageChange = (selectedItem: { selected: number }) => {
+    const value = selectedItem.selected + 1;
+    searchParams.set("page", value + "");
+    setSearchParams(searchParams, { replace: true });
+  };
 
-  // Fetch TV Series
   useEffect(() => {
-    dispatch(fetchTvMedia(1));
-  }, [dispatch]);
+    if (searchParams.get("q") && searchParams.get("page")) {
+      const data: { search: string; page: number } = {
+        search: searchParams.get("q")!,
+        page: parseInt(searchParams.get("page")!),
+      };
+      dispatch(fetchSearchTV(data));
+    } else {
+      if (searchParams.get("page")) {
+        const page: number = parseInt(searchParams.get("page")!);
+        dispatch(fetchTvMedia(page));
+      }
+    }
+  }, [dispatch, searchParams]);
 
   // Render Content
   const renderContent = () => {
@@ -59,19 +62,54 @@ const TV = () => {
       return (
         <CardList
           title={`Found ${
-            searchResults.length
+            searchResults.results.length
           } movie results for '${searchParams.get("q")}'`}
-          movieList={searchResults}
+          movieList={searchResults.results}
         />
       );
 
     return (
       <>
-        <CardList title="TV Series" movieList={movieList} />
+        <CardList title="TV Series" movieList={movieList.results} />
       </>
     );
   };
+  // Render Pagination
+  const renderPagination = () => {
+    if (searchParams.get("q"))
+      return (
+        <ReactPaginate
+          pageCount={searchResults.total_pages}
+          onPageChange={handlePageChange}
+          forcePage={searchResults.page - 1}
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          className="mt-5 flex items-center justify-center gap-5 text-white"
+          pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
+          activeClassName=" activeClassName"
+          activeLinkClassName="w-full h-full"
+        />
+      );
 
+    const pageCount = movieList.total_pages < 500 ? movieList.total_pages : 500;
+    return (
+      <>
+        <ReactPaginate
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          forcePage={movieList.page - 1}
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          className="mt-5 flex items-center justify-center gap-5 text-white"
+          pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
+          activeClassName=" activeClassName"
+          activeLinkClassName="w-full h-full"
+        />
+      </>
+    );
+  };
   // Display Error when fetch fail
   if (movieListError || searchError)
     return <Error message="Error Fetching Data" />;
@@ -80,11 +118,11 @@ const TV = () => {
     <div className="p-4 md:p-8 md:ml-24 w-full">
       <SearchInput
         placeholder="Search for TV Series"
-        handleChange={handleChange}
         handleKeyDown={handleKeyDown}
       />
       {renderContent()}
-      {page > 0 && (
+      {renderPagination()}
+      {/* {page > 0 && (
         <ReactPaginate
           pageCount={500}
           onPageChange={handlePageChange}
@@ -96,7 +134,7 @@ const TV = () => {
           pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
           activeClassName=" activeClassName"
         />
-      )}
+      )} */}
     </div>
   );
 };

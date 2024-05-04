@@ -2,7 +2,7 @@ import { ChangeEventHandler, FC, KeyboardEventHandler } from "react";
 import { CiSearch } from "react-icons/ci";
 interface SearchProps {
   placeholder: string;
-  handleChange: ChangeEventHandler<HTMLInputElement>;
+  handleChange?: ChangeEventHandler<HTMLInputElement>;
   handleKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 }
 const SearchInput: FC<SearchProps> = ({

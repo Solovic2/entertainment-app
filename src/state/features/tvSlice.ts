@@ -1,12 +1,22 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { ApiMovie, ApiPayload, MovieState } from "../../types";
+import { ApiMovie, ApiPayload, MovieState, fetchParams } from "../../types";
 
 const initialState: MovieState = {
   loading: false,
-  movieList: [],
-  searchResults: [],
+  movieList: {
+    page: 0,
+    results: [],
+    total_pages: 500,
+    total_results: 0,
+  },
+  searchResults: {
+    page: 0,
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+  },
   searchError: "",
   searchLoading: false,
   page: 1,
@@ -27,9 +37,10 @@ const tvSlice = createSlice({
         (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
           // Add Movie Type to each one as TV
-          state.movieList = action.payload.results.map((item: ApiMovie) => {
+          const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "tv" };
           });
+          state.movieList = { ...action.payload, results: payload };
         }
       )
       .addCase(fetchTvMedia.rejected, (state) => {
@@ -44,9 +55,10 @@ const tvSlice = createSlice({
         fetchSearchTV.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.searchLoading = false;
-          state.searchResults = action.payload.results.map((item: ApiMovie) => {
+          const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "tv" };
           });
+          state.searchResults = { ...action.payload, results: payload };
         }
       )
       .addCase(fetchSearchTV.rejected, (state) => {
@@ -72,13 +84,13 @@ export const fetchTvMedia = createAsyncThunk(
 );
 export const fetchSearchTV = createAsyncThunk(
   "tv/fetchSearchTV",
-  async (search: string): Promise<any> => {
+  async ({ search, page }: fetchParams): Promise<any> => {
     const response = await axios.get(requests.fetchSearchTV, {
       params: {
         query: search,
         include_adult: "true",
         language: "en-US",
-        page: "1",
+        page: page,
       },
     });
     const data: Promise<any> = await response.data;

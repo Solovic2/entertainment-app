@@ -14,10 +14,15 @@ export interface HomeState {
   searchError: string;
   searchLoading: boolean;
 }
+export interface fetchParams {
+  search?: string;
+  page: number;
+}
+
 export interface MovieState {
   loading: boolean;
-  movieList: ApiMovie[];
-  searchResults: ApiMovie[];
+  movieList: ApiPayload;
+  searchResults: ApiPayload;
   searchError: string;
   movieListError: string;
   page: number;

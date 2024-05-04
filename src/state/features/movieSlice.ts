@@ -1,17 +1,22 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { ApiMovie, ApiPayload, MovieState } from "../../types";
-
-interface fetchParams {
-  searchQuery?: string;
-  page: number;
-}
+import { ApiMovie, ApiPayload, MovieState, fetchParams } from "../../types";
 
 const initialState: MovieState = {
   loading: false,
-  movieList: [],
-  searchResults: [],
+  movieList: {
+    page: 0,
+    results: [],
+    total_pages: 500,
+    total_results: 0,
+  },
+  searchResults: {
+    page: 0,
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+  },
   searchError: "",
   searchLoading: false,
   page: 1,
@@ -39,7 +44,7 @@ const movieSlice = createSlice({
           const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "movie" };
           });
-          state.movieList = payload;
+          state.movieList = { ...action.payload, results: payload };
         }
       )
       .addCase(fetchMovieMedia.rejected, (state) => {
@@ -54,9 +59,10 @@ const movieSlice = createSlice({
         fetchSearchMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.searchLoading = false;
-          state.searchResults = action.payload.results.map((item: ApiMovie) => {
+          const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "movie" };
           });
+          state.searchResults = { ...action.payload, results: payload };
         }
       )
       .addCase(fetchSearchMedia.rejected, (state) => {
@@ -73,7 +79,7 @@ export const fetchMovieMedia = createAsyncThunk(
       params: {
         include_adult: "true",
         language: "en-US",
-        page: page + 1,
+        page: page,
       },
     });
 
@@ -83,13 +89,13 @@ export const fetchMovieMedia = createAsyncThunk(
 );
 export const fetchSearchMedia = createAsyncThunk(
   "movie/fetchSearchMedia",
-  async (search: string): Promise<any> => {
+  async ({ search, page }: fetchParams): Promise<any> => {
     const response = await axios.get(requests.fetchSearchMovies, {
       params: {
         query: search,
         include_adult: "true",
         language: "en-US",
-        page: "1",
+        page: page,
       },
     });
     const data: Promise<any> = await response.data;
