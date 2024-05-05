@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/ui/Navbar";
-
-const ProtectedRoute = () => {
+import Navbar from "./ui/Navbar";
+const LayoutRoute = () => {
   return (
     <div className="md:flex md:ml-5 ">
       <Navbar />
@@ -10,4 +9,4 @@ const ProtectedRoute = () => {
   );
 };
 
-export default ProtectedRoute;
+export default LayoutRoute;

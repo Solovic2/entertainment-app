@@ -8,9 +8,7 @@ import { ApiMovie } from "../types";
 const Bookmark = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ApiMovie[]>([]);
-  const { sessionId, bookmarks } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { bookmarks } = useSelector((state: RootState) => state.auth);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearchQuery(e.target.value);
