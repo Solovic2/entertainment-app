@@ -13,20 +13,23 @@ export interface HomeState {
   recommendingError: string;
   searchError: string;
   searchLoading: boolean;
+  currentPage: number;
+  totalPages: number;
+  totalSearchResults: number;
 }
 export interface fetchParams {
-  search?: string;
-  page?: number;
+  searchQuery: string;
+  page: number;
 }
 
 export interface MovieState {
   loading: boolean;
-  movieList: ApiPayload;
-  searchResults: ApiPayload;
-  searchError: string;
-  movieListError: string;
-  page: number;
-  searchLoading: boolean;
+  movieList: ApiMovie[];
+  searchResults: ApiMovie[];
+  error: string | null;
+  currentPage: number;
+  totalPages: number;
+  totalSearchResults: number;
 }
 
 export interface ApiPayload {

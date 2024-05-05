@@ -5,22 +5,12 @@ import { ApiMovie, ApiPayload, MovieState, fetchParams } from "../../types";
 
 const initialState: MovieState = {
   loading: false,
-  movieList: {
-    page: 0,
-    results: [],
-    total_pages: 500,
-    total_results: 0,
-  },
-  searchResults: {
-    page: 0,
-    results: [],
-    total_pages: 0,
-    total_results: 0,
-  },
-  searchError: "",
-  searchLoading: false,
-  page: 1,
-  movieListError: "",
+  movieList: [],
+  searchResults: [],
+  error: null,
+  totalPages: 1,
+  currentPage: 1,
+  totalSearchResults: 0,
 };
 
 const tvSlice = createSlice({
@@ -36,34 +26,39 @@ const tvSlice = createSlice({
         fetchTvMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
-          // Add Movie Type to each one as TV
+          // Add Movie Type to each one
           const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "tv" };
           });
-          state.movieList = { ...action.payload, results: payload };
+          state.movieList = payload;
+          state.currentPage = action.payload.page;
+          state.totalPages = action.payload.total_pages;
         }
       )
       .addCase(fetchTvMedia.rejected, (state) => {
         state.loading = false;
-        state.movieListError = "Error Fetching Movie";
+        state.error = "Error Fetching Movie";
       });
     builder
-      .addCase(fetchSearchTV.pending, (state) => {
-        state.searchLoading = true;
+      .addCase(fetchSearchTv.pending, (state) => {
+        state.loading = true;
       })
       .addCase(
-        fetchSearchTV.fulfilled,
+        fetchSearchTv.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
-          state.searchLoading = false;
+          state.loading = false;
           const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "tv" };
           });
-          state.searchResults = { ...action.payload, results: payload };
+          state.searchResults = payload;
+          state.currentPage = action.payload.page;
+          state.totalPages = action.payload.total_pages;
+          state.totalSearchResults = action.payload.total_results;
         }
       )
-      .addCase(fetchSearchTV.rejected, (state) => {
-        state.searchLoading = false;
-        state.searchError = "Error Fetching Search";
+      .addCase(fetchSearchTv.rejected, (state) => {
+        state.loading = false;
+        state.error = "Error Fetching Search";
       });
   },
 });
@@ -73,22 +68,23 @@ export const fetchTvMedia = createAsyncThunk(
   async (page: number): Promise<any> => {
     const response = await axios.get(requests.fetchTV, {
       params: {
-        include_adult: "true",
+        include_adult: "false",
         language: "en-US",
         page: page,
       },
     });
+
     const data: Promise<any> = await response.data;
     return data;
   }
 );
-export const fetchSearchTV = createAsyncThunk(
-  "tv/fetchSearchTV",
-  async ({ search, page }: fetchParams): Promise<any> => {
+export const fetchSearchTv = createAsyncThunk(
+  "tv/fetchSearchTv",
+  async ({ searchQuery, page }: fetchParams): Promise<any> => {
     const response = await axios.get(requests.fetchSearchTV, {
       params: {
-        query: search,
-        include_adult: "true",
+        query: searchQuery,
+        include_adult: "false",
         language: "en-US",
         page: page,
       },

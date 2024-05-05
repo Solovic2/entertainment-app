@@ -5,32 +5,18 @@ import { ApiMovie, ApiPayload, MovieState, fetchParams } from "../../types";
 
 const initialState: MovieState = {
   loading: false,
-  movieList: {
-    page: 0,
-    results: [],
-    total_pages: 500,
-    total_results: 0,
-  },
-  searchResults: {
-    page: 0,
-    results: [],
-    total_pages: 0,
-    total_results: 0,
-  },
-  searchError: "",
-  searchLoading: false,
-  page: 1,
-  movieListError: "",
+  movieList: [],
+  searchResults: [],
+  error: null,
+  totalPages: 1,
+  currentPage: 1,
+  totalSearchResults: 0,
 };
 
 const movieSlice = createSlice({
   name: "movie",
   initialState,
-  reducers: {
-    incrementPage: (state) => {
-      state.page += 1;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchMovieMedia.pending, (state) => {
@@ -44,30 +30,35 @@ const movieSlice = createSlice({
           const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "movie" };
           });
-          state.movieList = { ...action.payload, results: payload };
+          state.movieList = payload;
+          state.currentPage = action.payload.page;
+          state.totalPages = action.payload.total_pages;
         }
       )
       .addCase(fetchMovieMedia.rejected, (state) => {
         state.loading = false;
-        state.movieListError = "Error Fetching Movie";
+        state.error = "Error Fetching Movie";
       });
     builder
       .addCase(fetchSearchMedia.pending, (state) => {
-        state.searchLoading = true;
+        state.loading = true;
       })
       .addCase(
         fetchSearchMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
-          state.searchLoading = false;
+          state.loading = false;
           const payload = action.payload.results.map((item: ApiMovie) => {
             return { ...item, movie_type: "movie" };
           });
-          state.searchResults = { ...action.payload, results: payload };
+          state.searchResults = payload;
+          state.currentPage = action.payload.page;
+          state.totalPages = action.payload.total_pages;
+          state.totalSearchResults = action.payload.total_results;
         }
       )
       .addCase(fetchSearchMedia.rejected, (state) => {
-        state.searchLoading = false;
-        state.searchError = "Error Fetching Search";
+        state.loading = false;
+        state.error = "Error Fetching Search";
       });
   },
 });
@@ -77,7 +68,7 @@ export const fetchMovieMedia = createAsyncThunk(
   async (page: number): Promise<any> => {
     const response = await axios.get(requests.fetchMovies, {
       params: {
-        include_adult: "true",
+        include_adult: "false",
         language: "en-US",
         page: page,
       },
@@ -89,11 +80,11 @@ export const fetchMovieMedia = createAsyncThunk(
 );
 export const fetchSearchMedia = createAsyncThunk(
   "movie/fetchSearchMedia",
-  async ({ search, page }: fetchParams): Promise<any> => {
+  async ({ searchQuery, page }: fetchParams): Promise<any> => {
     const response = await axios.get(requests.fetchSearchMovies, {
       params: {
-        query: search,
-        include_adult: "true",
+        query: searchQuery,
+        include_adult: "false",
         language: "en-US",
         page: page,
       },
@@ -103,28 +94,4 @@ export const fetchSearchMedia = createAsyncThunk(
   }
 );
 
-// export const fetchMedia = createAsyncThunk(
-//   "movie/fetchMedia",
-//   async ({ search, page }: fetchParams): Promise<any> => {
-//     let response;
-//     let params = {
-//       page: 1,
-//       include_adult: "false",
-//       language: "en-US",
-//     };
-//     if (search) {
-//       params.query = search;
-//     }
-//     if (page) {
-//       params.page = page;
-//     }
-//     response = await axios.get(requests.fetchSearchMovies, {
-//       params,
-//     });
-//     const data: Promise<any> = await response.data;
-//     return data;
-//   }
-// );
-
-export const { incrementPage } = movieSlice.actions;
 export default movieSlice.reducer;

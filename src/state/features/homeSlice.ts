@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { ApiPayload, HomeState } from "../../types";
+import { ApiPayload, HomeState, fetchParams } from "../../types";
 
 const initialState: HomeState = {
   loading: false,
@@ -12,6 +12,9 @@ const initialState: HomeState = {
   recommendingError: "",
   searchLoading: false,
   searchError: "",
+  currentPage: 1,
+  totalPages: 1,
+  totalSearchResults: 0,
 };
 
 const homeSlice = createSlice({
@@ -45,6 +48,9 @@ const homeSlice = createSlice({
         (state, action: PayloadAction<ApiPayload>) => {
           state.searchLoading = false;
           state.searchResults = action.payload.results;
+          state.currentPage = action.payload.page;
+          state.totalPages = action.payload.total_pages;
+          state.totalSearchResults = action.payload.total_results;
         }
       )
       .addCase(fetchSearch.rejected, (state) => {
@@ -59,7 +65,7 @@ export const fetchMedia = createAsyncThunk(
   async (): Promise<any> => {
     const response = await axios.get(requests.fetchTrending, {
       params: {
-        include_adult: "true",
+        include_adult: "false",
       },
     });
     const data: Promise<any> = await response.data;
@@ -68,13 +74,13 @@ export const fetchMedia = createAsyncThunk(
 );
 export const fetchSearch = createAsyncThunk(
   "home/fetchSearch",
-  async (search: string): Promise<any> => {
+  async ({ searchQuery, page }: fetchParams): Promise<any> => {
     const response = await axios.get(requests.fetchSearchHome, {
       params: {
-        query: search,
-        include_adult: "true",
+        query: searchQuery,
+        include_adult: "false",
         language: "en-US",
-        page: "1",
+        page: page,
       },
     });
     const data: Promise<any> = await response.data;
