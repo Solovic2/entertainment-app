@@ -10,7 +10,8 @@ import { basic_imageUrl } from "../../constants";
 import { NavLink } from "react-router-dom";
 import Image from "../ui/Image";
 import { updateBookmark } from "../../state/auth/authSlice";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface TrendingCard {
   movie: ApiMovie;
 }
@@ -57,7 +58,8 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
   // Bookmark
   const isBookmarked = bookmarks.find((element) => element.id === movie.id);
   const handleBookmark = () => {
-    dispatch(updateBookmark(movie));
+    if (!sessionId) toast.warning(`Please login first to do this action`);
+    else dispatch(updateBookmark(movie));
   };
   return (
     <div key={movie.id} className="relative h-full w-full ">

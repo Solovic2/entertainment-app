@@ -10,6 +10,8 @@ import { AppDispatch, RootState } from "../../state/store";
 import { updateBookmark } from "../../state/auth/authSlice";
 import { NavLink } from "react-router-dom";
 import Image from "./Image";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface CardProps {
   movie: ApiMovie;
@@ -57,7 +59,8 @@ const Card: FC<CardProps> = ({ movie }) => {
   // Bookmark
   const isBookmarked = bookmarks.find((element) => element.id === movie.id);
   const handleBookmark = () => {
-    dispatch(updateBookmark(movie));
+    if (!sessionId) toast.warning(`Please login first to do this action`);
+    else dispatch(updateBookmark(movie));
   };
   return (
     <div className="relative">
