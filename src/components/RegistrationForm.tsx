@@ -13,7 +13,7 @@ interface FormProps {
 const RegistrationForm: FC<FormProps> = ({ title, children, footer }) => {
   return (
     <div className="flex flex-col items-center justify-center  ">
-      <MdMovieCreation className="my-12 text-primaryRed w-10 h-10" />
+      <MdMovieCreation className="my-12 md:my-20 text-primaryRed w-10 h-10" />
       <div className="bg-semiDarkBlue w-[90%] md:w-[400px]  px-6 py-5  rounded-lg">
         <h1 className="text-headingLg">{title}</h1>
         {children}

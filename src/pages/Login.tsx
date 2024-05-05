@@ -41,10 +41,7 @@ const Login = () => {
           body: "Don't have an account?",
         }}
       >
-        <form
-          className="my-[34px] flex flex-col gap-y-6"
-          onSubmit={handleSubmit}
-        >
+        <form className="my-8 flex flex-col gap-y-6" onSubmit={handleSubmit}>
           <Input name="email" type="email" placeholder="Email address" />
           <Input name="password" type="password" placeholder="Password" />
           <Button

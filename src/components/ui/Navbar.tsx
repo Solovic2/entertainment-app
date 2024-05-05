@@ -54,14 +54,14 @@ const Navbar = () => {
         <>
           {sessionId ? (
             <div
-              className="absolute right-0 md:left-0 md:bottom-20   bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto py-2 px-3 text-center"
+              className="absolute right-0 md:left-0 md:bottom-20   bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto py-2 px-3 text-center cursor-pointer"
               onClick={logOut}
             >
               <p className="hover:text-primaryRed">Logout</p>
             </div>
           ) : (
             <NavLink to={"/login"}>
-              <div className="absolute right-0 md:left-0 md:bottom-20  bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto text-center py-2 px-3">
+              <div className="absolute right-0 md:left-0 md:bottom-20  bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto text-center py-2 px-3 cursor-pointer">
                 <p className="hover:text-primaryRed">Login</p>
               </div>
             </NavLink>
