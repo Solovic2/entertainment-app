@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ApiMovie } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
@@ -9,18 +9,15 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { basic_imageUrl } from "../../constants";
 import { NavLink } from "react-router-dom";
 import Image from "../ui/Image";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { addFavorite } from "../../state/auth/bookmarkSlice";
+import { updateBookmark } from "../../state/auth/authSlice";
+
 interface TrendingCard {
   movie: ApiMovie;
 }
 const TrendingCard: FC<TrendingCard> = ({ movie }) => {
-  const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
-  const { bookmarksMovies, bookmarksTV } = useSelector(
-    (state: RootState) => state.bookmark
+  const { bookmarks, sessionId } = useSelector(
+    (state: RootState) => state.auth
   );
-  const { sessionId } = useSelector((state: RootState) => state.auth);
   const dispatch: AppDispatch = useDispatch();
   const {
     name,
@@ -57,29 +54,10 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
   // Adult Type
   const adultType: string = adult ? "+18" : "PG";
 
-  // // Bookmark
-  let bookmarkedCard;
-  if ((movie.movie_type || movie.media_type) === "tv") {
-    bookmarkedCard = bookmarksTV.find((element) => element.id === movie.id);
-  } else {
-    bookmarkedCard = bookmarksMovies.find((element) => element.id === movie.id);
-  }
+  // Bookmark
+  const isBookmarked = bookmarks.find((element) => element.id === movie.id);
   const handleBookmark = () => {
-    if (sessionId) {
-      const params = {
-        movie_type: movie.movie_type || movie.media_type,
-        id: movie.id,
-        sessionId: sessionId,
-      };
-      if (!isBookmarkClicked && !bookmarkedCard) {
-        dispatch(addFavorite(params));
-        setIsBookmarkClicked(true);
-      } else {
-        toast.warning(
-          `You can't undo bookmarked ${movie.movie_type || movie.media_type}`
-        );
-      }
-    } else toast.warning(`Please login first to do this action`);
+    dispatch(updateBookmark(movie));
   };
   return (
     <div key={movie.id} className="relative h-full w-full ">
@@ -129,11 +107,7 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
         className="z-50 absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
         onClick={handleBookmark}
       >
-        {bookmarkedCard || isBookmarkClicked ? (
-          <FaBookmark />
-        ) : (
-          <FaRegBookmark />
-        )}
+        {isBookmarked && sessionId ? <FaBookmark /> : <FaRegBookmark />}
       </div>
     </div>
   );

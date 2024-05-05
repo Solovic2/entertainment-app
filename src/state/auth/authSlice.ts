@@ -1,12 +1,20 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
-import { User } from "../../types";
+import { ApiMovie, User } from "../../types";
 import axios from "../../api/axios";
 
+const getLocalStorage = () => {
+  let bookmarks = localStorage.getItem("bookmarks");
+  return bookmarks !== null && JSON.parse(bookmarks);
+};
+const setLocalStorage = (items: ApiMovie[]) => {
+  localStorage.setItem("bookmarks", JSON.stringify(items));
+};
 interface AuthState {
   user: User | null;
   requestToken: string;
   sessionId: string;
+  bookmarks: ApiMovie[];
   error: boolean;
   loading: boolean;
 }
@@ -23,6 +31,7 @@ const initialState: AuthState = {
   user: null,
   requestToken: "",
   sessionId: localStorage.getItem("sessionId") || "",
+  bookmarks: getLocalStorage() || [],
   error: false,
   loading: false,
 };
@@ -43,6 +52,23 @@ const authSlice = createSlice({
       state.error = false;
       state.loading = false;
       localStorage.removeItem("sessionId");
+    },
+    updateBookmark: (state, action) => {
+      let items;
+      const movie = state.bookmarks.find(
+        (element) => element.id === action.payload.id
+      );
+
+      if (movie) {
+        items = state.bookmarks.filter(
+          (element) => element.id !== action.payload.id
+        );
+        state.bookmarks = items;
+      } else {
+        items = [...state.bookmarks, action.payload];
+        state.bookmarks = items;
+      }
+      setLocalStorage(items);
     },
   },
   extraReducers: (builder) => {
@@ -108,6 +134,6 @@ export const loginUser = createAsyncThunk("auth/loginUser", async () => {
   return data;
 });
 
-export const { setAuth, logout } = authSlice.actions;
+export const { setAuth, logout, updateBookmark } = authSlice.actions;
 
 export default authSlice.reducer;
