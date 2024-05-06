@@ -3,7 +3,7 @@ import requests from "../../api/requests";
 import axios from "../../api/axios";
 import { ApiPayload, HomeState, fetchParams } from "../../types";
 
-const initialState: HomeState = {
+export const initialStateHomeSlice: HomeState = {
   loading: false,
   trending: [],
   recommending: [],
@@ -19,7 +19,7 @@ const initialState: HomeState = {
 
 const homeSlice = createSlice({
   name: "home",
-  initialState,
+  initialState: initialStateHomeSlice,
   reducers: {},
   extraReducers: (builder) => {
     builder

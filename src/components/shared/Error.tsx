@@ -12,6 +12,7 @@ const Error = ({ message }: ErrorProps) => {
         close ? "hidden" : ""
       }`}
       onClick={() => setClose(true)}
+      role="div-error"
     >
       <p>
         <MdError size={25} />

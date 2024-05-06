@@ -108,8 +108,13 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
       <div
         className="z-50 absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
         onClick={handleBookmark}
+        role="card-bookmark"
       >
-        {isBookmarked && sessionId ? <FaBookmark /> : <FaRegBookmark />}
+        {isBookmarked && sessionId ? (
+          <FaBookmark role="bookmark-loggedIn" />
+        ) : (
+          <FaRegBookmark role="bookmark-notLoggedIn" />
+        )}
       </div>
     </div>
   );

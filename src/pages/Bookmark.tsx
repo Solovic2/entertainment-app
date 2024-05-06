@@ -31,7 +31,6 @@ const Bookmark = () => {
   const bookmarksTv = bookmarks.filter(
     (element) => (element.movie_type || element.media_type) !== "movie"
   );
-  console.log(searchQuery, bookmarks);
 
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full">

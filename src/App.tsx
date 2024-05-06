@@ -7,7 +7,8 @@ import Bookmark from "./pages/Bookmark";
 import Details from "./pages/Details";
 import LayoutRoute from "./components/ui/LayoutRoute";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
-
+import Modal from "react-modal";
+Modal.setAppElement("#root");
 function App() {
   return (
     <div className="bg-darkBlue min-h-[100svh]  text-white">

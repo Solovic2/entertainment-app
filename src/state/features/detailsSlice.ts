@@ -13,7 +13,7 @@ interface DetailState {
   similarMovie: ApiMovie[];
   detailError: string;
 }
-const initialState: DetailState = {
+export const initialStateDetailsSlice: DetailState = {
   loading: false,
   movieDetails: initialMovieDetails,
   similarMovie: [],
@@ -26,7 +26,7 @@ interface DetailsData {
 }
 const detailsSlice = createSlice({
   name: "details",
-  initialState,
+  initialState: initialStateDetailsSlice,
   reducers: {},
   extraReducers: (builder) => {
     builder

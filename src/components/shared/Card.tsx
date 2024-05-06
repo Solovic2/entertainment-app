@@ -69,19 +69,18 @@ const Card: FC<CardProps> = ({ movie }) => {
           <div
             className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg`}
           >
-            {/* <NavLink to={cardLink}> */}
             <div className="z-10 opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
               <div className="flex justify-center items-center gap-2 opacity-100 bg-greyishBlue py-2 px-3 md:py-3 md:px-4 rounded-full">
                 <IoIosInformationCircleOutline size={30} color="#fff" />
                 <p className="text-bodyM md:text-headingXs">More Info</p>
               </div>
             </div>
-            {/* </NavLink> */}
+
             <div className="h-28 sm:h-36 md:h-44">
               <Image
                 src={image}
                 className=" object-cover select-none hover:opacity-30 rounded-lg h-full w-full"
-                alt={name || title}
+                alt={title || name}
               />
             </div>
           </div>
@@ -108,8 +107,13 @@ const Card: FC<CardProps> = ({ movie }) => {
       <div
         className="z-30 absolute top-0 right-0 m-2 w-8 h-8 rounded-full p-2 bg-greyishBlue hover:bg-white hover:text-darkBlue cursor-pointer"
         onClick={handleBookmark}
+        role="card-bookmark"
       >
-        {isBookmarked && sessionId ? <FaBookmark /> : <FaRegBookmark />}
+        {isBookmarked && sessionId ? (
+          <FaBookmark role="bookmark-loggedIn" />
+        ) : (
+          <FaRegBookmark role="bookmark-notLoggedIn" />
+        )}
       </div>
     </div>
   );

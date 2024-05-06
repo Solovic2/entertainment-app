@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import Modal from "react-modal";
-Modal.setAppElement("#root");
 interface ReactModalProps {
   children: ReactNode;
   setTrailerUrl: React.Dispatch<React.SetStateAction<string>>;

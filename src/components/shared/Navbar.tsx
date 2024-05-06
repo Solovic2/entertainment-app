@@ -2,8 +2,8 @@ import { MouseEventHandler, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { MdMovieCreation } from "react-icons/md";
 import { navBarItems } from "../../constants";
-import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
+import { useDispatch, useSelector } from "react-redux";
 import { FaBookmark } from "react-icons/fa6";
 import { logout } from "../../state/auth/authSlice";
 
@@ -41,7 +41,9 @@ const Navbar = () => {
                 isActive ? "text-white" : "hover:text-primaryRed"
               }
             >
-              <FaBookmark className="text-xl md:text-2xl" />
+              <li>
+                <FaBookmark className="text-xl md:text-2xl" />
+              </li>
             </NavLink>
           )}
         </ul>
@@ -50,6 +52,7 @@ const Navbar = () => {
             sessionId ? "w-8 h-8" : "w-6 h-6"
           } rounded-full bg-primaryRed  cursor-pointer select-none`}
           onClick={() => setIsOpened((prev) => !prev)}
+          role="login-click"
         >
           {sessionId && (
             <img
@@ -66,6 +69,7 @@ const Navbar = () => {
             <div
               className="absolute right-0 md:left-0 md:bottom-20   bg-semiDarkBlue w-18 md:w-20 h-10 mx-auto py-2 px-3 text-center cursor-pointer"
               onClick={logOut}
+              role="logOut-click"
             >
               <p className="hover:text-primaryRed">Logout</p>
             </div>

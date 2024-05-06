@@ -27,7 +27,7 @@ interface SessionIdPayload {
   success: boolean;
   session_id: string;
 }
-const initialState: AuthState = {
+export const initialStateAuthSlice: AuthState = {
   user: null,
   requestToken: "",
   sessionId: localStorage.getItem("sessionId") || "",
@@ -38,7 +38,7 @@ const initialState: AuthState = {
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: initialStateAuthSlice,
   reducers: {
     setAuth: (state, action) => {
       const { user, requestToken } = action.payload;

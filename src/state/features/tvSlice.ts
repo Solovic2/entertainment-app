@@ -3,7 +3,7 @@ import requests from "../../api/requests";
 import axios from "../../api/axios";
 import { ApiMovie, ApiPayload, MovieState, fetchParams } from "../../types";
 
-const initialState: MovieState = {
+const initialStateTvSlice: MovieState = {
   loading: false,
   movieList: [],
   searchResults: [],
@@ -15,7 +15,7 @@ const initialState: MovieState = {
 
 const tvSlice = createSlice({
   name: "tv",
-  initialState,
+  initialState: initialStateTvSlice,
   reducers: {},
   extraReducers: (builder) => {
     builder
