@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { ApiMovie } from "../../types";
 import TrendingCard from "./TrendingCard";
-import LayoutCard from "../ui/LayoutCard";
+import LayoutCard from "../shared/LayoutCard";
 
 interface TrendingProps {
   movieList: ApiMovie[];

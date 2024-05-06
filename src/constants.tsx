@@ -1,5 +1,4 @@
 import { PiTelevision } from "react-icons/pi";
-import { FaBookmark } from "react-icons/fa6";
 import { MdLocalMovies } from "react-icons/md";
 import { PiSquaresFourFill } from "react-icons/pi";
 import { ApiDetails } from "./types";

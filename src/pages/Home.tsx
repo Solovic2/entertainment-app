@@ -1,4 +1,4 @@
-import SearchInput from "../components/ui/SearchInput";
+import SearchInput from "../components/shared/SearchInput";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../state/store";
@@ -9,11 +9,11 @@ import {
   useState,
 } from "react";
 import { fetchMedia, fetchSearch } from "../state/features/homeSlice";
-import CardList from "../components/ui/CardList";
-import Loading from "../components/ui/Loading";
+import CardList from "../components/shared/CardList";
+import Loading from "../components/shared/Loading";
 import Trending from "../components/home/Trending";
 import { useSearchParams } from "react-router-dom";
-import Error from "../components/ui/Error";
+import Error from "../components/shared/Error";
 import ReactPaginate from "react-paginate";
 
 const Home = () => {

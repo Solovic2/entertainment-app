@@ -1,8 +1,8 @@
-import SearchInput from "../components/ui/SearchInput";
+import SearchInput from "../components/shared/SearchInput";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { ChangeEventHandler, useEffect, useState } from "react";
-import CardList from "../components/ui/CardList";
+import CardList from "../components/shared/CardList";
 import { ApiMovie } from "../types";
 
 const Bookmark = () => {
@@ -31,6 +31,7 @@ const Bookmark = () => {
   const bookmarksTv = bookmarks.filter(
     (element) => (element.movie_type || element.media_type) !== "movie"
   );
+  console.log(searchQuery, bookmarks);
 
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full">
@@ -45,7 +46,7 @@ const Bookmark = () => {
             movieList={searchResults}
           />
         </>
-      ) : bookmarks ? (
+      ) : bookmarks.length > 0 ? (
         <>
           {bookmarksMovies.length > 0 && (
             <CardList title="Movie Bookmarks" movieList={bookmarksMovies} />
@@ -55,9 +56,8 @@ const Bookmark = () => {
           )}
         </>
       ) : (
-        <>No Bookmarks</>
+        <div className="mt-5">No Bookmarks Yet.</div>
       )}
-      {}
     </div>
   );
 };

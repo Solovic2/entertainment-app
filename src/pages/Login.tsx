@@ -1,12 +1,12 @@
 import { FormEvent, FormEventHandler, useEffect } from "react";
-import RegistrationForm from "../components/RegistrationForm";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
+import RegistrationForm from "../components/shared/RegistrationForm";
+import Input from "../components/shared/Input";
+import Button from "../components/shared/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSessionID, loginUser } from "../state/auth/authSlice";
 import { AppDispatch, RootState } from "../state/store";
-import Error from "../components/ui/Error";
+import Error from "../components/shared/Error";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,9 +17,9 @@ const Login = () => {
 
   const handleSubmit: FormEventHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = Object.fromEntries(
-      new FormData(e.currentTarget)
-    ) as Record<string, string>;
+    // const formData = Object.fromEntries(
+    //   new FormData(e.currentTarget)
+    // ) as Record<string, string>;
     dispatch(loginUser());
   };
   useEffect(() => {

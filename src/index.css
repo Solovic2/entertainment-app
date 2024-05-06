@@ -25,11 +25,11 @@ body {
 }
 @font-face {
   font-family: "outfit-light";
-  src: url("/src/assets/fonts/Outfit-Light.ttf");
+  src: url("./assets/fonts/Outfit-Light.ttf") format("truetype");
 }
 @font-face {
   font-family: "outfit-medium";
-  src: url("/src/assets/fonts/Outfit-Medium.ttf");
+  src: url("./assets/fonts/Outfit-Medium.ttf") format("truetype");
 }
 @layer utilities {
   .pause {

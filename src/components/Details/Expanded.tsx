@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface ExpandedProps {
   text: string;
@@ -12,7 +12,7 @@ const Expanded = ({ text }: ExpandedProps) => {
       <p
         className={`${
           expanded ? "h-20" : "h-40"
-        } max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words`}
+        } max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words font-outfitLight`}
       >
         {expanded ? expandedText + "..." : expandedText}
 

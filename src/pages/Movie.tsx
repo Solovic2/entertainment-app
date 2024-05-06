@@ -1,4 +1,4 @@
-import SearchInput from "../components/ui/SearchInput";
+import SearchInput from "../components/shared/SearchInput";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../state/store";
 import {
@@ -11,9 +11,9 @@ import {
   fetchMovieMedia,
   fetchSearchMedia,
 } from "../state/features/movieSlice";
-import CardList from "../components/ui/CardList";
-import Loading from "../components/ui/Loading";
-import Error from "../components/ui/Error";
+import CardList from "../components/shared/CardList";
+import Loading from "../components/shared/Loading";
+import Error from "../components/shared/Error";
 import { useSearchParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 

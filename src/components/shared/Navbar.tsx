@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { MdMovieCreation } from "react-icons/md";
 import { navBarItems } from "../../constants";
@@ -46,9 +46,19 @@ const Navbar = () => {
           )}
         </ul>
         <div
-          className="w-6 h-6 rounded-full bg-white cursor-pointer select-none"
+          className={` ${
+            sessionId ? "w-8 h-8" : "w-6 h-6"
+          } rounded-full bg-primaryRed  cursor-pointer select-none`}
           onClick={() => setIsOpened((prev) => !prev)}
-        ></div>
+        >
+          {sessionId && (
+            <img
+              className="object-cover h-full w-full rounded-full"
+              src="/assets/placeholder-user-image.jpg"
+              alt="user-image"
+            />
+          )}
+        </div>
       </div>
       {isOpened && (
         <>

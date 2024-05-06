@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../state/store";
 import { fetchSpecificMedia } from "../state/features/detailsSlice";
 import { basic_imageUrl } from "../constants";
-import Button from "../components/ui/Button";
-import CardList from "../components/ui/CardList";
-import Loading from "../components/ui/Loading";
+import Button from "../components/shared/Button";
+import CardList from "../components/shared/CardList";
+import Loading from "../components/shared/Loading";
 import YouTube, { YouTubeProps } from "react-youtube";
 import movieTrailer from "movie-trailer";
 import Expanded from "../components/Details/Expanded";
-import Error from "../components/ui/Error";
-import ReactModal from "../components/ui/Modal";
+import Error from "../components/shared/Error";
+import ReactModal from "../components/shared/Modal";
 const Details = () => {
   const { type, id } = useParams();
   const [trailerUrl, setTrailerUrl] = useState<string>("");
@@ -82,25 +82,25 @@ const Details = () => {
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full  ">
       <div
-        className="bg-cover bg-center h-[448px] shadow-inner bg-opacity-80 "
+        className="bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 "
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url(${image})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`,
         }}
       >
-        <div className="pt-[70px] md:pt-[80px] ml-8 max-w-[250px] md:max-w-[450px]">
+        <div className="pt-[70px] md:pt-[80px] ml-8 max-w-[250px] md:max-w-[450px] opacity-100 ">
           <div className="flex gap-2 flex-wrap select-none mb-1">
             {movieDetails.genres.map((element) => {
               return (
                 <div
                   key={element.id}
-                  className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full"
+                  className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full font-outfitMedium"
                 >
                   {element.name}
                 </div>
               );
             })}
           </div>
-          <div className="mb-5 text-2xl md:text-4xl lg:text-5xl font-bold break-word ">
+          <div className="mb-5 text-2xl md:text-4xl lg:text-5xl font-bold break-word  ">
             {movieDetails.title || movieDetails.name}
           </div>
           <div className="w-28 mb-5 font-bold" onClick={showTrailer}>

@@ -8,7 +8,7 @@ import { MdLocalMovies } from "react-icons/md";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { basic_imageUrl } from "../../constants";
 import { NavLink } from "react-router-dom";
-import Image from "../ui/Image";
+import Image from "../shared/Image";
 import { updateBookmark } from "../../state/auth/authSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
