@@ -6,7 +6,7 @@
 
 ## 🚀 Live Demo
 
-The live demo [link](https://663a4cb02242c90008738dca--entertainmentfeapp.netlify.app/) deployed on Netlify.
+The live demo [link](https://663a5600a812060007ec6ca6--entertainmentfeapp.netlify.app/) deployed on Netlify.
 
 
 ## 🛠 Built With
