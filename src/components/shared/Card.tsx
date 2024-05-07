@@ -59,7 +59,16 @@ const Card: FC<CardProps> = ({ movie }) => {
   // Bookmark
   const isBookmarked = bookmarks.find((element) => element.id === movie.id);
   const handleBookmark = () => {
-    if (!sessionId) toast.warning(`Please login first to do this action`);
+    if (!sessionId)
+      toast.warning(
+        <>
+          Please{" "}
+          <NavLink to="/login" className="text-primaryRed">
+            Login
+          </NavLink>{" "}
+          first to do this action
+        </>
+      );
     else dispatch(updateBookmark(movie));
   };
   return (
