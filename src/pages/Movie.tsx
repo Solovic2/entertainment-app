@@ -99,6 +99,8 @@ const Movies = () => {
       return (
         <div data-test-id="search-pagination">
           <ReactPaginate
+            nextAriaLabel="next-page"
+            previousAriaLabel="previous-page"
             pageCount={totalPages}
             onPageChange={handlePageChange}
             forcePage={currentPage - 1}

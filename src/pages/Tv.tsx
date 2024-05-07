@@ -95,6 +95,15 @@ const TV = () => {
     if (searchParams.get("q"))
       return (
         <ReactPaginate
+          nextAriaLabel="next-page"
+          previousAriaLabel="previous-page"
+          breakAriaLabels={{
+            forward: "forward-page",
+            backward: "backward-page",
+          }}
+          ariaLabelBuilder={(pageIndex: number, selectedPage: number) =>
+            `page${pageIndex}-selectedPage-${selectedPage}`
+          }
           pageCount={totalPages}
           onPageChange={handlePageChange}
           forcePage={currentPage - 1}
@@ -112,6 +121,15 @@ const TV = () => {
     return (
       <>
         <ReactPaginate
+          nextAriaLabel="next-page"
+          previousAriaLabel="previous-page"
+          breakAriaLabels={{
+            forward: "forward-page",
+            backward: "backward-page",
+          }}
+          ariaLabelBuilder={(pageIndex: number, selectedPage: number) =>
+            `page${pageIndex}-selectedPage-${selectedPage}`
+          }
           pageCount={pageCount}
           onPageChange={handlePageChange}
           forcePage={currentPage - 1}

@@ -53,6 +53,8 @@ const homeSlice = createSlice({
           state.searchResults = payload;
           state.currentPage = action.payload.page;
           state.totalPages = action.payload.total_pages;
+          console.log(payload.length, action.payload.total_results);
+
           state.totalSearchResults =
             action.payload.total_results - payload.length;
         }

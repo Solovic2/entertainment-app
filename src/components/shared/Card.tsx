@@ -64,7 +64,7 @@ const Card: FC<CardProps> = ({ movie }) => {
   };
   return (
     <div data-test-id="card" className="relative">
-      <NavLink to={cardLink}>
+      <NavLink to={cardLink} aria-label="card-link">
         <div className="flex flex-col">
           <div
             className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg`}
@@ -110,9 +110,12 @@ const Card: FC<CardProps> = ({ movie }) => {
         role="card-bookmark"
       >
         {isBookmarked && sessionId ? (
-          <FaBookmark role="bookmark-loggedIn" />
+          <FaBookmark role="bookmark-loggedIn" aria-label="bookmark-loggedIn" />
         ) : (
-          <FaRegBookmark role="bookmark-notLoggedIn" />
+          <FaRegBookmark
+            role="bookmark-notLoggedIn"
+            aria-label="bookmark-notLoggedIn"
+          />
         )}
       </div>
     </div>

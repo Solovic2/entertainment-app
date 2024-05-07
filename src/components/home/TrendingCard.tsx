@@ -67,7 +67,7 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
       key={movie.id}
       className="relative h-full w-full "
     >
-      <NavLink to={cardLink}>
+      <NavLink to={cardLink} aria-label="trending-card-link">
         <div
           className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg  `}
         >
@@ -115,9 +115,12 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
         role="card-bookmark"
       >
         {isBookmarked && sessionId ? (
-          <FaBookmark role="bookmark-loggedIn" />
+          <FaBookmark role="bookmark-loggedIn" aria-label="bookmark-loggedIn" />
         ) : (
-          <FaRegBookmark role="bookmark-notLoggedIn" />
+          <FaRegBookmark
+            role="bookmark-notLoggedIn"
+            aria-label="bookmark-notLoggedIn"
+          />
         )}
       </div>
     </div>

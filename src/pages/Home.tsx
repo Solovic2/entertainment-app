@@ -41,6 +41,7 @@ const Home = () => {
     totalPages,
     totalSearchResults,
   } = useSelector((state: RootState) => state.home);
+  console.log(totalSearchResults);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.target.value && searchQuery) {

@@ -19,6 +19,7 @@ body {
   margin: 0;
   max-width: 1600px;
   margin: auto;
+  background-color: #10141e;
 }
 .activeClassName {
   background-color: #fc4747;
