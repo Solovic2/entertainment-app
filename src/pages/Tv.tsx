@@ -65,8 +65,6 @@ const TV = () => {
         { replace: true }
       );
     } else {
-      console.log(value);
-
       if (value === 1) setSearchParams({}, { replace: true });
       else setSearchParams({ page: value.toString() }, { replace: true });
     }

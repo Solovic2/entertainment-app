@@ -47,16 +47,18 @@ const homeSlice = createSlice({
         fetchSearch.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.searchLoading = false;
-          const payload = action.payload.results.filter(
+          const payloadWithoutPerson = action.payload.results.filter(
             (item) => item.media_type !== "person"
           );
-          state.searchResults = payload;
+          const payloadWithPerson = action.payload.results.filter(
+            (item) => item.media_type === "person"
+          );
+          state.searchResults = payloadWithoutPerson;
           state.currentPage = action.payload.page;
           state.totalPages = action.payload.total_pages;
-          console.log(payload.length, action.payload.total_results);
 
           state.totalSearchResults =
-            action.payload.total_results - payload.length;
+            action.payload.total_results - payloadWithPerson.length;
         }
       )
       .addCase(fetchSearch.rejected, (state) => {

@@ -74,7 +74,6 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        console.log("loginUser.pending");
         state.loading = true;
       })
       .addCase(
@@ -90,7 +89,6 @@ const authSlice = createSlice({
       });
     builder
       .addCase(createSessionID.pending, (state) => {
-        console.log("createSessionID.pending");
         state.loading = true;
       })
       .addCase(
