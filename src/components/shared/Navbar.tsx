@@ -24,9 +24,8 @@ const Navbar = () => {
         </NavLink>
         <ul className="md:pt-12 flex md:flex-grow md:flex-col md:justify-start justify-center items-center  gap-4 md:gap-9 text-greyishBlue">
           {navBarItems.map((element) => (
-            <li>
+            <li key={element.id}>
               <NavLink
-                key={element.id}
                 to={element.url}
                 aria-label={element.arialLabeL}
                 className={({ isActive }) =>
@@ -38,7 +37,7 @@ const Navbar = () => {
             </li>
           ))}
           {sessionId && (
-            <li>
+            <li key={3}>
               <NavLink
                 to="/bookmarked"
                 className={({ isActive }) =>
