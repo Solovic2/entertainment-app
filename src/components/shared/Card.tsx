@@ -63,7 +63,7 @@ const Card: FC<CardProps> = ({ movie }) => {
     else dispatch(updateBookmark(movie));
   };
   return (
-    <div className="relative">
+    <div data-test-id="card" className="relative">
       <NavLink to={cardLink}>
         <div className="flex flex-col">
           <div

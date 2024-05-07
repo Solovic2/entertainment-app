@@ -11,7 +11,7 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
     setTrailerUrl("");
   };
   return (
-    <>
+    <div data-test-id="trailer-modal">
       <Modal
         isOpen={open}
         onRequestClose={onCloseModal}
@@ -48,7 +48,7 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
       >
         {children}
       </Modal>
-    </>
+    </div>
   );
 };
 

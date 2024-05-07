@@ -80,7 +80,7 @@ const Details = () => {
   if (detailError) return <Error message={detailError} />;
   if (trailerErr) return <Error message={trailerErr} />;
   return (
-    <div className="p-4 md:p-8 md:ml-24 w-full  ">
+    <div className="p-4 md:p-8 md:ml-24 w-full" data-test-id="movie-details">
       <div
         className="bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 "
         style={{
@@ -103,7 +103,11 @@ const Details = () => {
           <div className="mb-5 text-2xl md:text-4xl lg:text-5xl font-bold break-word  ">
             {movieDetails.title || movieDetails.name}
           </div>
-          <div className="w-28 mb-5 font-bold" onClick={showTrailer}>
+          <div
+            className="w-28 mb-5 font-bold"
+            data-test-id="play-button"
+            onClick={showTrailer}
+          >
             <Button name="Play" />
           </div>
           <Expanded text={movieDetails.overview} />

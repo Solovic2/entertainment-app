@@ -8,6 +8,7 @@ interface ButtonProps {
 const Button: FC<ButtonProps> = ({ name, className, onClick, disabled }) => {
   return (
     <button
+      data-test-id="button"
       className={`mt-4 rounded-md    flex justify-center p-3 w-full 
         ${
           disabled

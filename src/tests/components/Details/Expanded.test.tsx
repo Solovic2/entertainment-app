@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import Expanded from "../../../components/Details/Expanded";
 import userEvent from "@testing-library/user-event";
+import { expect } from "vitest";
 
 describe("Expanded Component", () => {
   it("renders correctly when text is shorter than or equal to 170 characters", () => {
     const shortText = "This is a short text.";
     render(<Expanded text={shortText} />);
     const text = screen.getByText(shortText);
-
     expect(text).toBeInTheDocument();
   });
 

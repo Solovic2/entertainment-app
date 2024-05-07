@@ -8,6 +8,7 @@ const Error = ({ message }: ErrorProps) => {
   const [close, setClose] = useState(false);
   return (
     <div
+      data-test-id="error"
       className={`absolute top-20  right-10 h-12 p-5 flex  items-center gap-5  bg-white text-red-600 rounded-lg cursor-pointer ${
         close ? "hidden" : ""
       }`}

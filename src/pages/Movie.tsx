@@ -97,18 +97,20 @@ const Movies = () => {
   const renderPagination = () => {
     if (searchParams.get("q"))
       return (
-        <ReactPaginate
-          pageCount={totalPages}
-          onPageChange={handlePageChange}
-          forcePage={currentPage - 1}
-          previousLabel={"<"}
-          nextLabel={">"}
-          breakLabel={"..."}
-          className="mt-5 flex items-center justify-center gap-5 text-white"
-          pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
-          activeClassName=" activeClassName"
-          activeLinkClassName="w-full h-full"
-        />
+        <div data-test-id="search-pagination">
+          <ReactPaginate
+            pageCount={totalPages}
+            onPageChange={handlePageChange}
+            forcePage={currentPage - 1}
+            previousLabel={"<"}
+            nextLabel={">"}
+            breakLabel={"..."}
+            className="mt-5 flex items-center justify-center gap-5 text-white"
+            pageClassName="bg-semiDarkBlue px-2 rounded-md font-outfitMedium"
+            activeClassName=" activeClassName"
+            activeLinkClassName="w-full h-full"
+          />
+        </div>
       );
 
     const pageCount = totalPages < 500 ? totalPages : 500;

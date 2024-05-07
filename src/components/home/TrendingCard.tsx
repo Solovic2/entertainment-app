@@ -62,7 +62,11 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
     else dispatch(updateBookmark(movie));
   };
   return (
-    <div key={movie.id} className="relative h-full w-full ">
+    <div
+      data-test-id="trendingCard"
+      key={movie.id}
+      className="relative h-full w-full "
+    >
       <NavLink to={cardLink}>
         <div
           className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg  `}

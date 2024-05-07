@@ -19,6 +19,7 @@ const SearchInput: FC<SearchProps> = ({
         className="text-headingM font-outfitLight py-2 outline-none border-transparent focus:border w-full h-full focus:border-b-greyishBlue bg-transparent caret-primaryRed "
         type="search"
         name="search"
+        data-test-id="search-input"
         defaultValue={value}
         autoComplete="off"
         placeholder={placeholder}
