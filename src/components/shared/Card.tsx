@@ -70,12 +70,8 @@ const Card: FC<CardProps> = ({ movie }) => {
         </>
       );
     else {
-      if (isBookmarked) {
-        toast.info(<>Successfully un bookmarked {movie_type || media_type}!</>);
-      } else {
-        toast.success(<>Successfully bookmarked {movie_type || media_type}!</>);
-      }
       dispatch(updateBookmark(movie));
+      toast.success(<>Successfully bookmarked {movie_type || media_type}!</>);
     }
   };
   return (

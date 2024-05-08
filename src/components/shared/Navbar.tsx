@@ -20,7 +20,7 @@ const Navbar = () => {
     <div className="md:pt-8 md:h-full  md:fixed md:top-0 rounded-xl ">
       <div className="md:h-[calc(100svh-3rem)] flex md:flex-col justify-between items-center p-3 md:py-5 md:px-9 bg-semiDarkBlue rounded-lg">
         <NavLink to="/" aria-label="home-page-link">
-          <MdMovieCreation className="text-primaryRed text-xl md:text-2xl w-8 h-8" />
+          <MdMovieCreation className="text-primaryRed text-xl md:text-2xl" />
         </NavLink>
         <ul className="md:pt-12 flex md:flex-grow md:flex-col md:justify-start justify-center items-center  gap-4 md:gap-9 text-greyishBlue">
           {navBarItems.map((element) => (
