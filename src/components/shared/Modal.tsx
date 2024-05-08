@@ -9,11 +9,15 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
   const onCloseModal = () => {
     setOpen(false);
     setTrailerUrl("");
+    document.body.style.overflow = "unset";
   };
+
   return (
-    <div data-test-id="trailer-modal">
+    <div data-test-id="trailer-modal ">
       <Modal
         isOpen={open}
+        className="w-[426px] md:w-[640px] lg:w-[854px] h-[480px]"
+        onAfterOpen={() => (document.body.style.overflow = "hidden")}
         onRequestClose={onCloseModal}
         style={{
           overlay: {
@@ -30,18 +34,19 @@ const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
           },
           content: {
             position: "relative",
-            width: "85%",
             top: "0px",
             left: "0px",
             right: "0px",
             bottom: "0px",
-            border: "1px solid #ccc",
+            border: "none",
             background: "transparent",
             overflow: "auto",
             WebkitOverflowScrolling: "touch",
-            borderRadius: "4px",
+            borderRadius: "0px",
             outline: "none",
-            padding: "20px",
+            // padding: "20px",
+            display: "flex",
+            justifyContent: "center",
           },
         }}
         contentLabel=""

@@ -8,13 +8,13 @@ import Details from "./pages/Details";
 import LayoutRoute from "./components/ui/LayoutRoute";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
 import Modal from "react-modal";
+import NotFound from "./pages/NotFound";
 Modal.setAppElement("#root");
 function App() {
   return (
     <div className="bg-darkBlue min-h-[100svh]  text-white">
       <Routes>
         <Route path="/login" element={<Login />} />
-
         <Route path="/" element={<LayoutRoute />}>
           <Route element={<Home />} path="/" />
           <Route element={<Movie />} path="/movies" />
@@ -31,6 +31,7 @@ function App() {
             path="/bookmarked"
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
