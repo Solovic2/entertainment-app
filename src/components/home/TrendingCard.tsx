@@ -68,7 +68,10 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
           first to do this action
         </>
       );
-    else dispatch(updateBookmark(movie));
+    else {
+      dispatch(updateBookmark(movie));
+      toast.success(<>Successfully bookmarked {movie_type || media_type}!</>);
+    }
   };
   return (
     <div

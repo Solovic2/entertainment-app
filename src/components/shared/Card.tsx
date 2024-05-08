@@ -69,7 +69,10 @@ const Card: FC<CardProps> = ({ movie }) => {
           first to do this action
         </>
       );
-    else dispatch(updateBookmark(movie));
+    else {
+      dispatch(updateBookmark(movie));
+      toast.success(<>Successfully bookmarked {movie_type || media_type}!</>);
+    }
   };
   return (
     <div data-test-id="card" className="relative">
