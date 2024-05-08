@@ -30,12 +30,11 @@ const Details = () => {
 
   // Options of Youtube
   const opts: YouTubeProps["opts"] = {
-    height: "390",
-    width: "100%",
     playerVars: {
       autoplay: 1,
     },
   };
+
   // Movie Image
   const image: string = movieDetails.backdrop_path
     ? basic_imageUrl + movieDetails.backdrop_path
@@ -116,7 +115,12 @@ const Details = () => {
 
       {trailerUrl !== "" && (
         <ReactModal setTrailerUrl={setTrailerUrl}>
-          <YouTube videoId={trailerUrl} opts={opts} className="mt-5" />
+          <YouTube
+            videoId={trailerUrl}
+            opts={opts}
+            className="mt-5 w-full "
+            iframeClassName="w-full h-full"
+          />
         </ReactModal>
       )}
       <CardList title="Similar" movieList={similarMovie} />
