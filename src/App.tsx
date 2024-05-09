@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
-import TV from "./pages/Tv";
+import Tv from "./pages/Tv";
 import Bookmark from "./pages/Bookmark";
 import Details from "./pages/Details";
 import LayoutRoute from "./components/ui/LayoutRoute";
@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<LayoutRoute />}>
           <Route element={<Home />} path="/" />
           <Route element={<Movie />} path="/movies" />
-          <Route element={<TV />} path="/tv" />
+          <Route element={<Tv />} path="/tv" />
           <Route element={<Details />} path="/:type/:id" />
 
           {/* Protected Routs */}

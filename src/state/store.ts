@@ -4,6 +4,7 @@ import movieSlice from "./features/movieSlice";
 import homeSlice from "./features/homeSlice";
 import tvSlice from "./features/tvSlice";
 import detailsSlice from "./features/detailsSlice";
+import searchSlice from "./features/searchSlice";
 // import counterReducer from "./counter/counterSlice";
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     movies: movieSlice,
     home: homeSlice,
     tv: tvSlice,
+    search: searchSlice,
   },
 });
 const rootReducer = combineReducers({
@@ -21,6 +23,7 @@ const rootReducer = combineReducers({
   movies: movieSlice,
   home: homeSlice,
   tv: tvSlice,
+  search: searchSlice,
 });
 
 export function setupStore(preloadedState?: Partial<RootState>) {

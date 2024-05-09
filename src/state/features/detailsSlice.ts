@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../api/axios";
-import { ApiDetails, ApiMovie } from "../../types";
+import { ApiDetails, Media } from "../../types";
 import { initialMovieDetails } from "../../constants";
 
 interface detailsType {
@@ -10,7 +10,7 @@ interface detailsType {
 interface DetailState {
   loading: boolean;
   movieDetails: ApiDetails;
-  similarMovie: ApiMovie[];
+  similarMovie: Media[];
   detailError: string;
 }
 export const initialStateDetailsSlice: DetailState = {
@@ -22,7 +22,7 @@ export const initialStateDetailsSlice: DetailState = {
 
 interface DetailsData {
   data: ApiDetails;
-  similarData: ApiMovie[];
+  similarData: Media[];
 }
 const detailsSlice = createSlice({
   name: "details",
@@ -50,7 +50,7 @@ const detailsSlice = createSlice({
 
 export const fetchSpecificMedia = createAsyncThunk(
   "details/fetchSpecificMedia",
-  async ({ type, id }: detailsType): Promise<any> => {
+  async ({ type, id }: detailsType): Promise<DetailsData> => {
     const response = await axios.get(`/${type}/${id}`, {
       params: { language: "en-US" },
     });
@@ -58,13 +58,15 @@ export const fetchSpecificMedia = createAsyncThunk(
       params: { language: "en-US" },
     });
 
-    const data: any = await Promise.all([response, similar]);
+    const data = await Promise.all([response, similar]);
     const results = {
       data: data[0]?.data,
-      similarData: data[1]?.data.results.map((element: ApiMovie) => {
+      similarData: data[1]?.data.results.map((element: Media) => {
         return { ...element, media_type: type };
       }),
     };
+    console.log(results);
+
     return results;
   }
 );

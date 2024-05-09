@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ApiMovie } from "../../types";
+import { Media } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
@@ -13,7 +13,7 @@ import { updateBookmark } from "../../state/auth/authSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 interface TrendingCard {
-  movie: ApiMovie;
+  movie: Media;
 }
 const TrendingCard: FC<TrendingCard> = ({ movie }) => {
   const { bookmarks, sessionId } = useSelector(
@@ -25,7 +25,6 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
     title,
     backdrop_path,
     poster_path,
-    movie_type,
     media_type,
     first_air_date,
     release_date,
@@ -36,14 +35,13 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
   const date = first_air_date?.substring(0, 4) || release_date?.substring(0, 4);
 
   // Card Media Type
-  const typeMedia =
-    (movie_type || media_type) === "tv" ? <PiTelevision /> : <MdLocalMovies />;
+  const typeMedia = media_type === "tv" ? <PiTelevision /> : <MdLocalMovies />;
 
   // Link Slug For Details
   const cardLink: string =
-    (movie_type || media_type) === "tv"
+    media_type === "tv"
       ? `${`/tv/${movie.id}`}`
-      : `${`/${movie_type || media_type}/${movie.id}`}`;
+      : `${`/${media_type}/${movie.id}`}`;
 
   // Card Image
   const image: string = backdrop_path
@@ -70,9 +68,9 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
       );
     else {
       if (isBookmarked) {
-        toast.info(<>Successfully un bookmarked {movie_type || media_type}!</>);
+        toast.info(<>Successfully un bookmarked {media_type}!</>);
       } else {
-        toast.success(<>Successfully bookmarked {movie_type || media_type}!</>);
+        toast.success(<>Successfully bookmarked {media_type}!</>);
       }
       dispatch(updateBookmark(movie));
     }
@@ -111,9 +109,7 @@ const TrendingCard: FC<TrendingCard> = ({ movie }) => {
               <span className="w-1 h-1 rounded-full bg-white"></span>
               <p className="flex items-center gap-1 capitalize ">
                 {typeMedia}
-                {(movie_type || media_type) === "tv"
-                  ? "TV"
-                  : movie_type || media_type}
+                {media_type === "tv" ? "TV" : media_type}
               </p>
               <span className="w-1 h-1 rounded-full bg-white"></span>
               <p>{adultType}</p>

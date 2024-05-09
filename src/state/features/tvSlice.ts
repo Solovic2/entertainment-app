@@ -1,18 +1,28 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { ApiMovie, ApiPayload, MovieState, fetchParams } from "../../types";
+import { Media } from "../../types";
 
-const initialStateTvSlice: MovieState = {
+export interface TVState {
+  loading: boolean;
+  movieList: Media[];
+  error: string | null;
+  currentPage: number;
+  totalPages: number;
+}
+const initialStateTvSlice: TVState = {
   loading: false,
   movieList: [],
-  searchResults: [],
   error: null,
   totalPages: 1,
   currentPage: 1,
-  totalSearchResults: 0,
 };
-
+export interface ApiTvPayload {
+  page: number;
+  results: Media[];
+  total_pages: number;
+  total_results: number;
+}
 const tvSlice = createSlice({
   name: "tv",
   initialState: initialStateTvSlice,
@@ -24,11 +34,11 @@ const tvSlice = createSlice({
       })
       .addCase(
         fetchTvMedia.fulfilled,
-        (state, action: PayloadAction<ApiPayload>) => {
+        (state, action: PayloadAction<ApiTvPayload>) => {
           state.loading = false;
           // Add Movie Type to each one
-          const payload = action.payload.results.map((item: ApiMovie) => {
-            return { ...item, movie_type: "tv" };
+          const payload = action.payload.results.map((item: Media) => {
+            return { ...item, media_type: "tv" };
           });
           state.movieList = payload;
           state.currentPage = action.payload.page;
@@ -39,33 +49,12 @@ const tvSlice = createSlice({
         state.loading = false;
         state.error = "Error Fetching Movie";
       });
-    builder
-      .addCase(fetchSearchTv.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(
-        fetchSearchTv.fulfilled,
-        (state, action: PayloadAction<ApiPayload>) => {
-          state.loading = false;
-          const payload = action.payload.results.map((item: ApiMovie) => {
-            return { ...item, movie_type: "tv" };
-          });
-          state.searchResults = payload;
-          state.currentPage = action.payload.page;
-          state.totalPages = action.payload.total_pages;
-          state.totalSearchResults = action.payload.total_results;
-        }
-      )
-      .addCase(fetchSearchTv.rejected, (state) => {
-        state.loading = false;
-        state.error = "Error Fetching Search";
-      });
   },
 });
 
 export const fetchTvMedia = createAsyncThunk(
   "tv/fetchTvMedia",
-  async (page: number): Promise<any> => {
+  async (page: number): Promise<ApiTvPayload> => {
     const response = await axios.get(requests.fetchTV, {
       params: {
         include_adult: "false",
@@ -74,22 +63,7 @@ export const fetchTvMedia = createAsyncThunk(
       },
     });
 
-    const data: Promise<any> = await response.data;
-    return data;
-  }
-);
-export const fetchSearchTv = createAsyncThunk(
-  "tv/fetchSearchTv",
-  async ({ searchQuery, page }: fetchParams): Promise<any> => {
-    const response = await axios.get(requests.fetchSearchTV, {
-      params: {
-        query: searchQuery,
-        include_adult: "false",
-        language: "en-US",
-        page: page,
-      },
-    });
-    const data: Promise<any> = await response.data;
+    const data: Promise<ApiTvPayload> = await response.data;
     return data;
   }
 );

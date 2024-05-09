@@ -1,20 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
-import { ApiMovie, User } from "../../types";
+import { Media, User } from "../../types";
 import axios from "../../api/axios";
 
-const getLocalStorage = () => {
-  let bookmarks = localStorage.getItem("bookmarks");
-  return bookmarks !== null && JSON.parse(bookmarks);
-};
-const setLocalStorage = (items: ApiMovie[]) => {
-  localStorage.setItem("bookmarks", JSON.stringify(items));
-};
 interface AuthState {
   user: User | null;
   requestToken: string;
   sessionId: string;
-  bookmarks: ApiMovie[];
+  bookmarks: Media[];
   error: boolean;
   loading: boolean;
 }
@@ -27,6 +20,13 @@ interface SessionIdPayload {
   success: boolean;
   session_id: string;
 }
+const getLocalStorage = () => {
+  const bookmarks = localStorage.getItem("bookmarks");
+  return bookmarks !== null && JSON.parse(bookmarks);
+};
+const setLocalStorage = (items: Media[]) => {
+  localStorage.setItem("bookmarks", JSON.stringify(items));
+};
 export const initialStateAuthSlice: AuthState = {
   user: null,
   requestToken: "",

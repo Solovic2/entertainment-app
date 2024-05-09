@@ -7,7 +7,7 @@ interface ProtectedRouteProp {
 }
 const ProtectedRoute = ({ children }: ProtectedRouteProp) => {
   const { sessionId } = useSelector((state: RootState) => state.auth);
-  let location = useLocation();
+  const location = useLocation();
   if (!sessionId)
     return <Navigate to="/login" state={{ from: location }} replace />;
   return <>{children}</>;

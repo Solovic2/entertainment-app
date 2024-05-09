@@ -4,14 +4,29 @@ interface SearchProps {
   placeholder: string;
   handleChange?: ChangeEventHandler<HTMLInputElement>;
   handleKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  setSearchParams: (params: Record<string, string | string[]>) => void;
   value?: string;
 }
 const SearchInput: FC<SearchProps> = ({
   placeholder,
-  handleChange,
-  handleKeyDown,
   value,
+  setSearchParams,
 }) => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (!e.target.value && value) {
+      setSearchParams({});
+    }
+  };
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    const { value } = e.currentTarget;
+    if (e.key === "Enter") {
+      if (value === "") {
+        setSearchParams({});
+      } else {
+        setSearchParams({ page: "1", q: value });
+      }
+    }
+  };
   return (
     <div className="flex items-center gap-3 mt-1 w-full ">
       <CiSearch className="w-6 h-6 md:w-8 md:h-8" />

@@ -22,12 +22,6 @@ const Details = () => {
     (state: RootState) => state.details
   );
 
-  // Page Params
-  const page = {
-    type: type!,
-    id: id!,
-  };
-
   // Options of Youtube
   const opts: YouTubeProps["opts"] = {
     playerVars: {
@@ -55,15 +49,18 @@ const Details = () => {
       )
         .then((url: string | URL) => {
           if (url) {
-            const urlParams: Record<string, any> = new URLSearchParams(
-              new URL(url).search
-            );
-            setTrailerUrl(urlParams.get("v"));
+            const urlParams:
+              | string
+              | URLSearchParams
+              | string[][]
+              | Record<string, string>
+              | undefined = new URLSearchParams(new URL(url).search);
+            setTrailerUrl(urlParams.get("v")!);
           } else {
             setTrailerError("Trailer not Found for this " + type);
           }
         })
-        .catch((error: any) => {
+        .catch((error: unknown) => {
           if (error instanceof Error) {
             setTrailerError("Trailer not Found for this " + type);
           }
@@ -72,16 +69,16 @@ const Details = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchSpecificMedia(page));
-  }, [type, id]);
+    dispatch(fetchSpecificMedia({ type: type!, id: id! }));
+  }, [type, id, dispatch]);
 
   if (loading) return <Loading />;
   if (detailError) return <Error message={detailError} />;
   if (trailerErr) return <Error message={trailerErr} />;
   return (
-    <div className="p-4 md:p-8 md:ml-24 w-full" data-test-id="movie-details">
+    <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
       <div
-        className="bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 "
+        className=" bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 rounded-md"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`,
         }}
@@ -123,7 +120,9 @@ const Details = () => {
           />
         </ReactModal>
       )}
-      <CardList title="Similar" movieList={similarMovie} />
+      <div className="p-4">
+        <CardList title="Similar" movieList={similarMovie} />
+      </div>
     </div>
   );
 };
