@@ -67,7 +67,7 @@ The live demo [link](https://entertainmentfeapp.netlify.app/) deployed on Netlif
 - Run this command `npm run dev` to start the dev server.
 
 
-## Authors
+## Author
 
 👤 **Islam Mohammed**
 
