@@ -34,7 +34,7 @@ The live demo [link](https://entertainmentfeapp.netlify.app/) deployed on Netlif
 - Add `pagination`to Movie and TV pages.
 - Add `search functionality` on pages with `pagination`.
 - Add `lazy loading` to images to increase UX and performance.
-- Testing using `unit`, `integration` test and `end-to-end test` using cypress for components.
+- Testing using `unit`, `integration` test using `React Testing Library`and `end-to-end test` using cypress for components.
 - Finalize all design issues.
 - Deploy on `netlify`.
 
@@ -67,7 +67,7 @@ The live demo [link](https://entertainmentfeapp.netlify.app/) deployed on Netlif
 - Run this command `npm run dev` to start the dev server.
 
 
-## Authors
+## Author
 
 👤 **Islam Mohammed**
 
