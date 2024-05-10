@@ -14,16 +14,22 @@ import movieTrailer from "movie-trailer";
 import Expanded from "../components/Details/Expanded";
 import ReactModal from "../components/shared/Modal";
 import { toast } from "react-toastify";
+import Error from "../components/shared/Error";
 
 const Details = () => {
   const { type, id } = useParams();
   const [trailerUrl, setTrailerUrl] = useState<string>("");
-  const [trailerErr, setTrailerError] = useState("");
+  const [, setTrailerError] = useState("");
 
   const dispatch: AppDispatch = useDispatch();
-  const { loading, movieDetails, similarMovie, detailError } = useSelector(
-    (state: RootState) => state.details
-  );
+  const {
+    loadingSimilar,
+    loadingDetails,
+    movieDetails,
+    similarMovie,
+    detailError,
+    similarMovieError,
+  } = useSelector((state: RootState) => state.details);
 
   // Movie Image
   const image: string = movieDetails.backdrop_path
@@ -54,6 +60,7 @@ const Details = () => {
             setTrailerUrl(urlParams.get("v")!);
           } else {
             setTrailerError("Trailer not Found for this " + type);
+            toast.error("Trailer not Found for this " + type);
           }
         })
         .catch((error: unknown) => {
@@ -65,68 +72,81 @@ const Details = () => {
   };
 
   useEffect(() => {
-    if (!trailerErr && !detailError) {
-      dispatch(fetchSpecificMedia({ type: type, id: id })).then(() =>
-        dispatch(fetchSimilarMedia({ type: type, id: id }))
-      );
-    }
-    if (trailerErr) toast.error(trailerErr);
-    if (detailError) toast.error(detailError);
-  }, [type, id, dispatch, trailerErr, detailError]);
+    dispatch(fetchSpecificMedia({ type: type, id: id })).then(() =>
+      dispatch(fetchSimilarMedia({ type: type, id: id }))
+    );
+  }, [type, id, dispatch]);
 
-  if (loading) return <Loading />;
   return (
-    <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
-      <div
-        className=" bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 rounded-md"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`,
-        }}
-      >
-        <div className="pt-[70px] md:pt-[80px] ml-8 max-w-[250px] md:max-w-[450px] opacity-100 ">
-          <div className="flex gap-2 flex-wrap select-none mb-1">
-            {movieDetails?.genres.map((element) => {
-              return (
-                <div
-                  key={element.id}
-                  className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full font-outfitMedium"
-                >
-                  {element.name}
+    <>
+      <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
+        {detailError ? (
+          <Error message={detailError} />
+        ) : loadingDetails ? (
+          <Loading />
+        ) : (
+          <>
+            <div
+              className=" bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 rounded-md"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`,
+              }}
+            >
+              <div className="pt-[70px] md:pt-[80px] ml-8 max-w-[250px] md:max-w-[450px] opacity-100 ">
+                <div className="flex gap-2 flex-wrap select-none mb-1">
+                  {movieDetails?.genres.map((element) => {
+                    return (
+                      <div
+                        key={element.id}
+                        className="px-2 py-1 text-sm text-white bg-primaryRed rounded-full font-outfitMedium"
+                      >
+                        {element.name}
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
-          <div className="mb-5 text-2xl md:text-4xl lg:text-5xl font-bold break-word  ">
-            {movieDetails.title || movieDetails.name}
-          </div>
-          <div
-            className="w-28 mb-5 font-bold"
-            data-test-id="play-button"
-            onClick={showTrailer}
-          >
-            <Button name="Play" />
-          </div>
-          <Expanded text={movieDetails.overview} />
-        </div>
-      </div>
+                <div className="mb-5 text-2xl md:text-4xl lg:text-5xl font-bold break-word  ">
+                  {movieDetails.title || movieDetails.name}
+                </div>
+                <div
+                  className="w-28 mb-5 font-bold"
+                  data-test-id="play-button"
+                  onClick={showTrailer}
+                >
+                  <Button name="Play" />
+                </div>
+                <Expanded text={movieDetails.overview} />
+              </div>
+            </div>
+            <div className="p-4">
+              <>
+                {similarMovieError ? (
+                  <>{similarMovieError}</>
+                ) : loadingSimilar ? (
+                  <Loading />
+                ) : (
+                  <CardList title="Similar" movieList={similarMovie} />
+                )}
+              </>
+            </div>
+          </>
+        )}
 
-      {trailerUrl !== "" && (
-        <ReactModal setTrailerUrl={setTrailerUrl}>
-          <iframe
-            className="w-full h-full"
-            src={`https://www.youtube.com/embed/${trailerUrl}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          ></iframe>
-        </ReactModal>
-      )}
-      <div className="p-4">
-        <CardList title="Similar" movieList={similarMovie} />
+        {trailerUrl !== "" && (
+          <ReactModal setTrailerUrl={setTrailerUrl}>
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${trailerUrl}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          </ReactModal>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

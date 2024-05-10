@@ -8,16 +8,20 @@ interface detailsType {
   id: string | undefined;
 }
 interface DetailState {
-  loading: boolean;
+  loadingDetails: boolean;
+  loadingSimilar: boolean;
   movieDetails: ApiDetails;
   similarMovie: MediaCardProp[];
   detailError: string;
+  similarMovieError: string;
 }
 export const initialStateDetailsSlice: DetailState = {
-  loading: false,
+  loadingDetails: false,
+  loadingSimilar: false,
   movieDetails: initialMovieDetails,
   similarMovie: [],
   detailError: "",
+  similarMovieError: "",
 };
 
 const detailsSlice = createSlice({
@@ -27,22 +31,22 @@ const detailsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchSpecificMedia.pending, (state) => {
-        state.loading = true;
+        state.loadingDetails = true;
       })
       .addCase(fetchSpecificMedia.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingDetails = false;
         state.movieDetails = action.payload;
       })
       .addCase(fetchSpecificMedia.rejected, (state) => {
-        state.loading = false;
+        state.loadingDetails = false;
         state.detailError = "Error Fetching details";
       });
     builder
       .addCase(fetchSimilarMedia.pending, (state) => {
-        state.loading = true;
+        state.loadingSimilar = true;
       })
       .addCase(fetchSimilarMedia.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingSimilar = false;
         state.similarMovie = action.payload.results.map((item: Media) => {
           return {
             ...item,
@@ -68,8 +72,8 @@ const detailsSlice = createSlice({
         }) as MediaCardProp[];
       })
       .addCase(fetchSimilarMedia.rejected, (state) => {
-        state.loading = false;
-        state.detailError = "Error Fetching details";
+        state.loadingSimilar = false;
+        state.similarMovieError = "Error Fetching details";
         throw new Error("Error");
       });
   },
