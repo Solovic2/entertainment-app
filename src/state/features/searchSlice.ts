@@ -28,11 +28,13 @@ const movieSlice = createSlice({
     builder
       .addCase(fetchSearch.pending, (state) => {
         state.loading = true;
+        state.error = "";
       })
       .addCase(
         fetchSearch.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
-          state.loading = true;
+          state.loading = false;
+          state.error = "";
           state.searchResults = action.payload.results.map((item: Media) => {
             return {
               ...item,
@@ -59,7 +61,6 @@ const movieSlice = createSlice({
           state.currentPage = action.payload.page;
           state.totalPages = action.payload.total_pages;
           state.totalSearchResults = action.payload.total_results;
-          state.loading = false;
         }
       )
       .addCase(fetchSearch.rejected, (state) => {

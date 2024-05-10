@@ -28,11 +28,13 @@ const movieSlice = createSlice({
     builder
       .addCase(fetchMovieMedia.pending, (state) => {
         state.loading = true;
+        state.error = "";
       })
       .addCase(
         fetchMovieMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
+          state.error = "";
           // Add Media Type to each one
           const payload = action.payload.results.map((item: Media) => {
             return {

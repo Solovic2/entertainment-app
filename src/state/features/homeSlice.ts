@@ -27,11 +27,15 @@ const homeSlice = createSlice({
     builder
       .addCase(fetchMedia.pending, (state) => {
         state.loading = true;
+        state.trendingError = "";
+        state.recommendingError = "";
       })
       .addCase(
         fetchMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
+          state.trendingError = "";
+          state.recommendingError = "";
           state.trending = action.payload.results
             .map((item: Media) => {
               return {

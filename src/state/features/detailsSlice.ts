@@ -32,9 +32,11 @@ const detailsSlice = createSlice({
     builder
       .addCase(fetchSpecificMedia.pending, (state) => {
         state.loadingDetails = true;
+        state.detailError = "";
       })
       .addCase(fetchSpecificMedia.fulfilled, (state, action) => {
         state.loadingDetails = false;
+        state.detailError = "";
         state.movieDetails = action.payload;
       })
       .addCase(fetchSpecificMedia.rejected, (state) => {
@@ -44,9 +46,11 @@ const detailsSlice = createSlice({
     builder
       .addCase(fetchSimilarMedia.pending, (state) => {
         state.loadingSimilar = true;
+        state.similarMovieError = "";
       })
       .addCase(fetchSimilarMedia.fulfilled, (state, action) => {
         state.loadingSimilar = false;
+        state.similarMovieError = "";
         state.similarMovie = action.payload.results.map((item: Media) => {
           return {
             ...item,

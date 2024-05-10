@@ -114,10 +114,12 @@ const authSlice = createSlice({
     builder
       .addCase(createSessionID.pending, (state) => {
         state.loading = true;
+        state.error = false;
       })
       .addCase(
         createSessionID.fulfilled,
         (state, action: PayloadAction<SessionIdPayload>) => {
+          state.error = false;
           const session_id: string = action.payload.session_id;
           state.sessionId = session_id;
           localStorage.setItem("sessionId", session_id);

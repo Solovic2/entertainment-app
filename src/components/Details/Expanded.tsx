@@ -12,7 +12,7 @@ const Expanded = ({ text }: ExpandedProps) => {
       <p
         className={`${
           expanded ? "h-20" : "h-40"
-        } max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words font-outfitLight`}
+        } max-w-[300px] md:max-w-[450px] md:leading-[1.3] text-sm w-[45rem] break-words font-outfitLight overflow-clip`}
       >
         {expanded ? expandedText + "..." : expandedText}
 

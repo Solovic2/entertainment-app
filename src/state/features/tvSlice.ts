@@ -27,12 +27,13 @@ const tvSlice = createSlice({
     builder
       .addCase(fetchTvMedia.pending, (state) => {
         state.loading = true;
+        state.error = "";
       })
       .addCase(
         fetchTvMedia.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
-          // Add Movie Type to each one
+          state.error = "";
           const payload = action.payload.results.map((item: Media) => {
             return {
               ...item,

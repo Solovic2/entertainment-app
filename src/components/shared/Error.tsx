@@ -7,7 +7,7 @@ const Error = ({ message }: ErrorProps) => {
   return (
     <div
       data-test-id="error"
-      className="w-full h-svh flex justify-center items-center flex-col p-5 gap-5 text-red-600 "
+      className="w-full h-[calc(100svh-10rem)] flex justify-center items-center flex-col  gap-5 text-red-600 "
       role="div-error"
     >
       <p>
