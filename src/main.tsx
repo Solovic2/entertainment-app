@@ -14,8 +14,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Router>
         <ErrorBoundary>
           <App />
-          <ToastContainer />
         </ErrorBoundary>
+        <ToastContainer />
       </Router>
     </Provider>
   </React.StrictMode>

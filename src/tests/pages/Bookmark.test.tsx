@@ -2,28 +2,22 @@ import { it, expect, describe } from "vitest";
 import { fireEvent, screen } from "@testing-library/react";
 import Bookmark from "../../pages/Bookmark";
 import { initialStateWithSessionId, renderWithProviders } from "../state";
-import { ApiMovie } from "../../types";
+import { MediaCardProp } from "../../types";
 
 vi.mock("react-redux", async (importOriginal) => ({
   ...(await importOriginal<typeof import("react-redux")>()),
   useDispatch: vi.fn(),
 }));
-
-const movie: ApiMovie = {
+const movie: MediaCardProp = {
   id: 1,
-  overview: "Overview",
-  popularity: 10,
-  video: false,
-  name: "Test Movie",
+  adult: "PG",
   title: "TEST",
-  backdrop_path: "/assets/placeholder-image.png",
-  poster_path: "",
-  movie_type: "movie",
-  media_type: "",
-  first_air_date: "",
-  release_date: "2022-01-01",
-  adult: false,
+  image: "/assets/placeholder-image.png",
+  media_type: "movie",
+  cardLink: "/media/1",
+  date: "2012",
 };
+
 describe("Bookmark Component", () => {
   it("renders SearchInput component", () => {
     renderWithProviders(<Bookmark />, {
@@ -68,7 +62,7 @@ describe("Bookmark Component", () => {
       preloadedState: {
         auth: {
           ...initialStateWithSessionId,
-          bookmarks: [movie, { ...movie, movie_type: "tv" }],
+          bookmarks: [movie, { ...movie, media_type: "tv" }],
         },
       },
     });

@@ -1,28 +1,31 @@
-import React, { Component } from "react";
+import React, { Component, ErrorInfo, ReactNode } from "react";
 import Error from "../shared/Error";
 
 interface Props {
-  children: React.ReactNode;
+  children?: ReactNode;
 }
 
 interface State {
   hasError: boolean;
-  errorMsg: string;
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, errorMsg: "" };
+  public state: State = {
+    hasError: false,
+  };
+
+  public static getDerivedStateFromError(): State {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
   }
 
-  componentDidCatch(error: Error) {
-    this.setState({ hasError: true, errorMsg: error.message });
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Uncaught error:", error, errorInfo);
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
-      return <Error message={this.state.errorMsg} />;
+      return <Error message="Unexpected Error!" />;
     }
 
     return this.props.children;

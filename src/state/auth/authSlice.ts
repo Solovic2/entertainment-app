@@ -134,26 +134,39 @@ const authSlice = createSlice({
 export const createSessionID = createAsyncThunk(
   "auth/createSessionID",
   async (request_token: string) => {
-    const response = await axios.post(requests.createSessionId, {
-      request_token: request_token,
-    });
-    const data = await response.data;
-    return data;
+    try {
+      const response = await axios.post(requests.createSessionId, {
+        request_token: request_token,
+      });
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      throw new Error("Error");
+    }
   }
 );
 export const loginUser = createAsyncThunk("auth/loginUser", async () => {
-  const response = await axios.get(requests.createRequestToken);
-  const data = await response.data;
-  if (data.success) {
-    const validateToken = await axios.post(requests.validateRequestToken, {
-      username: import.meta.env.VITE_USERNAME,
-      password: import.meta.env.VITE_PASSWORD,
-      request_token: data.request_token,
-    });
-    const validateTokenData = await validateToken.data;
-    return validateTokenData;
+  try {
+    const response = await axios.get(requests.createRequestToken);
+    const data = await response.data;
+    if (data.success) {
+      try {
+        const validateToken = await axios.post(requests.validateRequestToken, {
+          username: import.meta.env.VITE_USERNAME,
+          password: import.meta.env.VITE_PASSWORD,
+          request_token: data.request_token,
+        });
+        const validateTokenData = await validateToken.data;
+        return validateTokenData;
+      } catch (error) {
+        throw new Error("Error");
+      }
+    } else {
+      throw new Error("Error");
+    }
+  } catch (error) {
+    throw new Error("Error");
   }
-  return data;
 });
 
 export const { setAuth, logout, updateBookmark } = authSlice.actions;

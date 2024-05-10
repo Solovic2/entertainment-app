@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../state/store";
-import { fetchSpecificMedia } from "../state/features/detailsSlice";
+import {
+  fetchSimilarMedia,
+  fetchSpecificMedia,
+} from "../state/features/detailsSlice";
 import { basic_imageUrl } from "../constants";
 import Button from "../components/shared/Button";
 import CardList from "../components/shared/CardList";
 import Loading from "../components/shared/Loading";
 import movieTrailer from "movie-trailer";
 import Expanded from "../components/Details/Expanded";
-// import Error from "../components/shared/Error";
 import ReactModal from "../components/shared/Modal";
+import { toast } from "react-toastify";
+
 const Details = () => {
   const { type, id } = useParams();
   const [trailerUrl, setTrailerUrl] = useState<string>("");
@@ -61,12 +65,16 @@ const Details = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchSpecificMedia({ type: type!, id: id! }));
-  }, [type, id, dispatch]);
+    if (!trailerErr && !detailError) {
+      dispatch(fetchSpecificMedia({ type: type, id: id })).then(() =>
+        dispatch(fetchSimilarMedia({ type: type, id: id }))
+      );
+    }
+    if (trailerErr) toast.error(trailerErr);
+    if (detailError) toast.error(detailError);
+  }, [type, id, dispatch, trailerErr, detailError]);
 
   if (loading) return <Loading />;
-  if (detailError) throw new Error(detailError);
-  if (trailerErr) throw new Error(trailerErr);
   return (
     <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
       <div
@@ -77,7 +85,7 @@ const Details = () => {
       >
         <div className="pt-[70px] md:pt-[80px] ml-8 max-w-[250px] md:max-w-[450px] opacity-100 ">
           <div className="flex gap-2 flex-wrap select-none mb-1">
-            {movieDetails.genres.map((element) => {
+            {movieDetails?.genres.map((element) => {
               return (
                 <div
                   key={element.id}

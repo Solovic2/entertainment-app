@@ -7,10 +7,11 @@ import { useSearchParams } from "react-router-dom";
 import { fetchTvMedia } from "../state/features/tvSlice";
 import PageWrapper from "../components/shared/PageWrapper";
 import Pagination from "../components/shared/Pagination";
+import { toast } from "react-toastify";
 
 const Tv = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { loading, movieList, error, currentPage, totalPages } = useSelector(
+  const { loading, movieList, currentPage, totalPages, error } = useSelector(
     (state: RootState) => state.tv
   );
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,13 +25,11 @@ const Tv = () => {
   };
 
   useEffect(() => {
-    if (!searchParams.get("q")) {
+    if (!searchParams.get("q") && !error) {
       dispatch(fetchTvMedia(page));
     }
-  }, [dispatch, searchParams, page]);
-
-  // Display Error when fetch fail
-  if (error) throw new Error(error);
+    if (error) toast.error(error);
+  }, [dispatch, searchParams, page, error]);
 
   return (
     <PageWrapper placeholder="Search for tv series">
@@ -39,12 +38,14 @@ const Tv = () => {
       ) : (
         <>
           <CardList title="TV Series" movieList={movieList} />
-          <Pagination
-            totalPages={pageCount}
-            handlePageChange={handlePageChange}
-            currentPage={currentPage}
-            dataTestId="search-pagination"
-          />
+          {movieList.length > 0 && (
+            <Pagination
+              totalPages={pageCount}
+              handlePageChange={handlePageChange}
+              currentPage={currentPage}
+              dataTestId="search-pagination"
+            />
+          )}
         </>
       )}
     </PageWrapper>

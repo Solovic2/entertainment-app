@@ -7,6 +7,7 @@ import CardList from "./CardList";
 import { fetchSearch } from "../../state/features/searchSlice";
 import Loading from "./Loading";
 import Pagination from "./Pagination";
+import { toast } from "react-toastify";
 
 interface PageWrapperProps {
   children: ReactNode;
@@ -50,12 +51,11 @@ const PageWrapper = ({ children, placeholder }: PageWrapperProps) => {
   };
 
   useEffect(() => {
-    if (searchQuery) {
+    if (searchQuery && !error) {
       dispatch(fetchSearch({ searchQuery, page, type: type }));
     }
-  }, [dispatch, searchQuery, page, type]);
-
-  if (error) throw new Error(error);
+    if (error) toast.error(error);
+  }, [dispatch, searchQuery, page, type, error]);
 
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full">

@@ -55,6 +55,7 @@ const Navbar = () => {
           className={`w-8 h-8 rounded-full bg-primaryRed  cursor-pointer select-none`}
           onClick={() => setIsOpened((prev) => !prev)}
           aria-label="login-image"
+          data-tooltip-id="my-tooltip"
         >
           {sessionId && (
             <img
@@ -65,6 +66,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
       {isOpened && (
         <>
           {sessionId ? (

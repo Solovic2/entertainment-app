@@ -6,20 +6,21 @@ import CardList from "../components/shared/CardList";
 import Loading from "../components/shared/Loading";
 import Trending from "../components/home/Trending";
 import PageWrapper from "../components/shared/PageWrapper";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { loading, trending, recommending, trendingError, recommendingError } =
+  const { loading, trending, recommending, recommendingError, trendingError } =
     useSelector((state: RootState) => state.home);
 
   // Fetch all Media
   useEffect(() => {
-    dispatch(fetchMedia());
-  }, [dispatch]);
-
-  // Display Error when fetch fail
-  if (recommendingError || trendingError)
-    throw new Error("Error Fetching Data");
+    if (!recommendingError && !trendingError) {
+      dispatch(fetchMedia());
+    }
+    if (recommendingError) toast.error(recommendingError);
+    if (trendingError) toast.error(trendingError);
+  }, [dispatch, recommendingError, trendingError]);
 
   return (
     <PageWrapper placeholder="Search for movies or tv series">

@@ -39,6 +39,14 @@ export const mockAuthState: RootState = {
   home: initialStateHomeSlice,
   movies: initialStateMovieSlice,
   tv: initialStateMovieSlice,
+  search: {
+    loading: false,
+    searchResults: [],
+    error: null,
+    totalPages: 1,
+    currentPage: 1,
+    totalSearchResults: 0,
+  },
 };
 export function renderWithProviders(
   ui: React.ReactElement,
@@ -49,7 +57,7 @@ export function renderWithProviders(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren): JSX.Element {
     return (
       <Provider store={store}>
         <Router>{children}</Router>

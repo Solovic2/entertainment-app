@@ -92,17 +92,18 @@ const homeSlice = createSlice({
   },
 });
 
-export const fetchMedia = createAsyncThunk(
-  "home/fetchMedia",
-  async (): Promise<ApiPayload> => {
+export const fetchMedia = createAsyncThunk("home/fetchMedia", async () => {
+  try {
     const response = await axios.get(requests.fetchTrending, {
       params: {
         include_adult: "false",
       },
     });
-    const data: Promise<ApiPayload> = await response.data;
+    const data = await response.data;
     return data;
+  } catch (error) {
+    throw new Error("Error");
   }
-);
+});
 
 export default homeSlice.reducer;

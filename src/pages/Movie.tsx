@@ -7,10 +7,11 @@ import Loading from "../components/shared/Loading";
 import { useSearchParams } from "react-router-dom";
 import PageWrapper from "../components/shared/PageWrapper";
 import Pagination from "../components/shared/Pagination";
+import { toast } from "react-toastify";
 
 const Movies = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { loading, movieList, error, currentPage, totalPages } = useSelector(
+  const { loading, movieList, currentPage, totalPages, error } = useSelector(
     (state: RootState) => state.movies
   );
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,11 +25,9 @@ const Movies = () => {
   };
 
   useEffect(() => {
-    if (!searchParams.get("q")) dispatch(fetchMovieMedia(page));
-  }, [dispatch, searchParams, page]);
-
-  // Display Error when fetch fail
-  if (error) throw new Error(error);
+    if (!searchParams.get("q") && !error) dispatch(fetchMovieMedia(page));
+    if (error) toast.error(error);
+  }, [dispatch, searchParams, page, error]);
 
   return (
     <PageWrapper placeholder="Search for movies">
@@ -37,12 +36,14 @@ const Movies = () => {
       ) : (
         <>
           <CardList title="Movie Series" movieList={movieList} />
-          <Pagination
-            totalPages={pageCount}
-            handlePageChange={handlePageChange}
-            currentPage={currentPage}
-            dataTestId="search-pagination"
-          />
+          {movieList.length > 0 && (
+            <Pagination
+              totalPages={pageCount}
+              handlePageChange={handlePageChange}
+              currentPage={currentPage}
+              dataTestId="search-pagination"
+            />
+          )}
         </>
       )}
     </PageWrapper>

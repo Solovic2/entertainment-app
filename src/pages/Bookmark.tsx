@@ -3,12 +3,12 @@ import { RootState } from "../state/store";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import CardList from "../components/shared/CardList";
 import { useSearchParams } from "react-router-dom";
-import { Media } from "../types";
+import { MediaCardProp } from "../types";
 import { CiSearch } from "react-icons/ci";
 import Pagination from "../components/shared/Pagination";
 
 const Bookmark = () => {
-  const [searchResults, setSearchResults] = useState<Media[]>([]);
+  const [searchResults, setSearchResults] = useState<MediaCardProp[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [currentPage, setCurrentPage] = useState(
@@ -38,10 +38,12 @@ const Bookmark = () => {
 
   useEffect(() => {
     const filterSearch = () => {
-      const searchedBookmark: Media[] = bookmarks.filter((element: Media) => {
-        const name = element.name || element.title;
-        return name?.toLowerCase().includes(searchQuery.toLowerCase());
-      });
+      const searchedBookmark: MediaCardProp[] = bookmarks.filter(
+        (element: MediaCardProp) => {
+          const name = element.title;
+          return name?.toLowerCase().includes(searchQuery.toLowerCase());
+        }
+      );
       setSearchResults(searchedBookmark);
     };
     filterSearch();

@@ -32,7 +32,7 @@ const movieSlice = createSlice({
       .addCase(
         fetchSearch.fulfilled,
         (state, action: PayloadAction<ApiPayload>) => {
-          state.loading = false;
+          state.loading = true;
           state.searchResults = action.payload.results.map((item: Media) => {
             return {
               ...item,
@@ -59,6 +59,7 @@ const movieSlice = createSlice({
           state.currentPage = action.payload.page;
           state.totalPages = action.payload.total_pages;
           state.totalSearchResults = action.payload.total_results;
+          state.loading = false;
         }
       )
       .addCase(fetchSearch.rejected, (state) => {
@@ -70,24 +71,28 @@ const movieSlice = createSlice({
 
 export const fetchSearch = createAsyncThunk(
   "search/fetchSearch",
-  async ({ searchQuery, page, type }: fetchParams): Promise<ApiPayload> => {
-    const response = await axios.get(`/search/${type}`, {
-      params: {
-        query: searchQuery,
-        include_adult: "false",
-        language: "en-US",
-        page: page,
-      },
-    });
-    const data: Promise<ApiPayload> = await response.data;
-    const payload = (await data).results
-      .map((item: Media) => {
-        if (type !== "multi") return { ...item, media_type: type };
-        else return item;
-      })
-      .filter((element) => element.media_type !== "person");
+  async ({ searchQuery, page, type }: fetchParams) => {
+    try {
+      const response = await axios.get(`/search/${type}`, {
+        params: {
+          query: searchQuery,
+          include_adult: "false",
+          language: "en-US",
+          page: page,
+        },
+      });
+      const data = await response.data;
+      const payload = data.results
+        .map((item: Media) => {
+          if (type !== "multi") return { ...item, media_type: type };
+          else return item;
+        })
+        .filter((element: Media) => element.media_type !== "person");
 
-    return { ...data, results: payload };
+      return { ...data, results: payload };
+    } catch (error) {
+      throw new Error("Error");
+    }
   }
 );
 

@@ -31,6 +31,6 @@ describe("Movies Page", () => {
   });
   it("should handle error state", () => {
     cy.visit("/movies?page=1000");
-    cy.get('[data-test-id="error"]').should("exist");
+    cy.get('[data-test-id="card"]').should("not.exist");
   });
 });

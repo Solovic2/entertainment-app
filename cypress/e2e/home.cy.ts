@@ -37,6 +37,6 @@ describe("Home test", () => {
   });
   it("should handle error state", () => {
     cy.visit("/?q=cairo&page=1000");
-    cy.get('[data-test-id="error"]').should("exist");
+    cy.get('[data-test-id="card"]').should("not.exist");
   });
 });

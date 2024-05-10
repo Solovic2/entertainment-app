@@ -69,17 +69,22 @@ const movieSlice = createSlice({
 
 export const fetchMovieMedia = createAsyncThunk(
   "movie/fetchMovieMedia",
-  async (page: number): Promise<ApiPayload> => {
-    const response = await axios.get(requests.fetchMovies, {
-      params: {
-        include_adult: "false",
-        language: "en-US",
-        page: page,
-      },
-    });
+  async (page: number) => {
+    try {
+      const response = await axios.get(requests.fetchMovies, {
+        params: {
+          include_adult: "false",
+          language: "en-US",
+          page: page,
+        },
+      });
 
-    const data: Promise<ApiPayload> = await response.data;
-    return data;
+      const data = await response.data;
+
+      return data;
+    } catch (error) {
+      throw new Error("Error");
+    }
   }
 );
 

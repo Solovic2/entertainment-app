@@ -9,8 +9,7 @@ describe("Details Page", () => {
 
   it("displays error message if movie details fetch fails", () => {
     cy.visit("/movie/10200000");
-
-    cy.get('[data-test-id="error"]').should("exist");
+    cy.get('[data-test-id="movie-details"]').should("not.exist");
   });
 
   it("displays movie details after successful fetch", () => {

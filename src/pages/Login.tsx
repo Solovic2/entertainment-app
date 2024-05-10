@@ -3,18 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSessionID, loginUser } from "../state/auth/authSlice";
 import { AppDispatch, RootState } from "../state/store";
 import { MdMovieCreation } from "react-icons/md";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { error, loading } = useSelector((state: RootState) => state.auth);
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = () => {
     dispatch(loginUser()).then((res) =>
       dispatch(createSessionID(res.payload.request_token))
     );
   };
+  useEffect(() => {
+    toast.error(error);
+  }, [error]);
 
-  if (error) throw new Error("Error When Login ");
   return (
     <div>
       <div className="flex flex-col items-center justify-center  ">

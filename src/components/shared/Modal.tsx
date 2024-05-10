@@ -8,6 +8,8 @@ import {
 interface ReactModalProps {
   children: ReactNode;
   setTrailerUrl: React.Dispatch<React.SetStateAction<string>>;
+  outerClassName?: string;
+  innerClassName?: string;
 }
 const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
   const [open, setOpen] = useState(true);

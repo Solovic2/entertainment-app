@@ -20,35 +20,25 @@ import {
   renderWithProviders,
 } from "../../state";
 import Card from "../../../components/shared/Card";
-import { ApiMovie } from "../../../types";
+import { MediaCardProp } from "../../../types";
 
-const movie: ApiMovie = {
+const movie: MediaCardProp = {
   id: 1,
-  overview: "Overview",
-  popularity: 10,
-  video: false,
-  name: "Test Movie",
+  adult: "PG",
   title: "TEST",
-  backdrop_path: "/assets/placeholder-image.png",
-  poster_path: "",
-  movie_type: "movie",
-  media_type: "",
-  first_air_date: "",
-  release_date: "2022-01-01",
-  adult: false,
+  image: "/assets/placeholder-image.png",
+  media_type: "movie",
+  cardLink: "/media/1",
+  date: "2012",
 };
-const { name, title, first_air_date, release_date } = movie;
 
-// Card Date
-const date = first_air_date?.substring(0, 4) || release_date?.substring(0, 4);
-
-// Link Slug For Details
+const { title, date } = movie;
 
 describe("Card Component", () => {
   it("should render correct items", () => {
     renderWithProviders(<Card movie={movie} key={1} />);
 
-    const text = screen.getByText(`${title || name}`);
+    const text = screen.getByText(`${title}`);
     const adultType = screen.getByText("PG");
     const dateText = screen.getByText(`${date}`);
     // const altImg = screen.getByAltText(`${title || name}`);

@@ -4,14 +4,20 @@ import SearchInput from "../../../components/shared/SearchInput";
 
 describe("SearchInput Component", () => {
   it("should render with correct props that passed to it", () => {
-    render(<SearchInput placeholder="Search" />);
+    render(<SearchInput placeholder="Search" setSearchParams={() => {}} />);
 
     const placeholder = screen.getByPlaceholderText("Search");
 
     expect(placeholder).toBeInTheDocument();
   });
   it("display value of input if value is passed as a prop", () => {
-    render(<SearchInput placeholder="Search" value="search" />);
+    render(
+      <SearchInput
+        placeholder="Search"
+        value="search"
+        setSearchParams={() => {}}
+      />
+    );
 
     const placeholder = screen.getByPlaceholderText(
       "Search"
@@ -21,22 +27,23 @@ describe("SearchInput Component", () => {
     expect(placeholder).toBeInTheDocument();
     expect(value).toBe("search");
   });
-  it("call when onChange input", () => {
-    const handleChange = vitest.fn();
-    render(<SearchInput placeholder="Search" handleChange={handleChange} />);
+  it("calls setSearchParams when input value changes and Press Enter", () => {
+    render(<SearchInput placeholder="Search" setSearchParams={() => {}} />);
 
     const placeholder = screen.getByPlaceholderText("Search");
-    fireEvent.change(placeholder, { target: { value: "Writing.." } });
+    fireEvent.change(placeholder, { key: "Enter", target: { value: "Ok" } });
 
-    expect(handleChange).toBeCalledWith(expect.any(Object));
+    expect(placeholder).toHaveValue("Ok");
   });
-  it("call when onKeyDown input", () => {
-    const handleKeyDown = vitest.fn();
-    render(<SearchInput placeholder="Search" handleKeyDown={handleKeyDown} />);
+  it("call when setSearchParams change if Click Enter", () => {
+    const setSearchParamsMock = vi.fn();
+    render(
+      <SearchInput placeholder="Search" setSearchParams={setSearchParamsMock} />
+    );
 
     const placeholder = screen.getByPlaceholderText("Search");
     fireEvent.keyDown(placeholder, { key: "Enter" });
 
-    expect(handleKeyDown).toBeCalledWith(expect.any(Object));
+    expect(setSearchParamsMock).toBeCalledWith(expect.any(Object));
   });
 });

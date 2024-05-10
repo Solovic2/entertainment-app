@@ -1,30 +1,19 @@
-import { useState } from "react";
 import { MdError } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 
 interface ErrorProps {
   message: string;
 }
 const Error = ({ message }: ErrorProps) => {
-  const [close, setClose] = useState(false);
-  const navigate = useNavigate();
-  const handleOnClick = () => {
-    setClose(true);
-    navigate(0);
-  };
   return (
     <div
       data-test-id="error"
-      className={`w-full md:w-fit flex justify-center  items-center h-12 p-5 gap-5 bg-white text-red-600 md:absolute md:top-20 md:right-10 md:rounded-lg cursor-pointer ${
-        close ? "hidden" : ""
-      }`}
-      onClick={handleOnClick}
+      className="w-full h-svh flex justify-center items-center flex-col p-5 gap-5 text-red-600 "
       role="div-error"
     >
       <p>
-        <MdError size={25} />
+        <MdError size={100} />
       </p>
-      <p className="text-xl">{message}</p>
+      <p className="text-3xl md:text-5xl">{message}</p>
     </div>
   );
 };
