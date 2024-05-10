@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Card from "./Card";
-import { Media } from "../../types";
+import { MediaCardProp } from "../../types";
 import LayoutCard from "./LayoutCard";
 interface CardListProps {
   title: string;
-  movieList: Media[];
+  movieList: MediaCardProp[];
 }
 const CardList: FC<CardListProps> = ({ title, movieList }) => {
   if (movieList.length === 0)
@@ -18,7 +18,7 @@ const CardList: FC<CardListProps> = ({ title, movieList }) => {
   return (
     <LayoutCard title={title}>
       <div className="mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-y-8 md:gap-x-10 w-full">
-        {movieList?.map((movie: Media) => {
+        {movieList?.map((movie: MediaCardProp) => {
           return (
             <div
               key={movie.id}

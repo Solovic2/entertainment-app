@@ -31,7 +31,7 @@ const Movies = () => {
   if (error) throw new Error(error);
 
   return (
-    <PageWrapper>
+    <PageWrapper placeholder="Search for movies">
       {loading ? (
         <Loading />
       ) : (

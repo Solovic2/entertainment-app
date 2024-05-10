@@ -1,10 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../api/axios";
-import { Media, fetchParams } from "../../types";
+import { ApiPayload, Media, MediaCardProp, fetchParams } from "../../types";
+import { basic_imageUrl } from "../../constants";
 
 interface SearchState {
   loading: boolean;
-  searchResults: Media[];
+  searchResults: MediaCardProp[];
   error: string | null;
   currentPage: number;
   totalPages: number;
@@ -18,12 +19,6 @@ export const initialState: SearchState = {
   currentPage: 1,
   totalSearchResults: 0,
 };
-export interface ApiSearchPayload {
-  page: number;
-  results: Media[];
-  total_pages: number;
-  total_results: number;
-}
 
 const movieSlice = createSlice({
   name: "search",
@@ -36,9 +31,31 @@ const movieSlice = createSlice({
       })
       .addCase(
         fetchSearch.fulfilled,
-        (state, action: PayloadAction<ApiSearchPayload>) => {
+        (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
-          state.searchResults = action.payload.results;
+          state.searchResults = action.payload.results.map((item: Media) => {
+            return {
+              ...item,
+              adult: item.adult ? "+18" : "PG",
+              date:
+                item.first_air_date?.substring(0, 4) ||
+                item.release_date?.substring(0, 4),
+              image: item.backdrop_path
+                ? basic_imageUrl + item.backdrop_path
+                : item.poster_path
+                ? basic_imageUrl + item.poster_path
+                : "/assets/placeholder-image.png",
+              title:
+                item.title ||
+                item.name ||
+                item.original_name ||
+                item.original_title,
+              cardLink:
+                item.media_type === "tv"
+                  ? `${`/tv/${item.id}`}`
+                  : `${`/${item.media_type}/${item.id}`}`,
+            };
+          }) as MediaCardProp[];
           state.currentPage = action.payload.page;
           state.totalPages = action.payload.total_pages;
           state.totalSearchResults = action.payload.total_results;
@@ -53,11 +70,7 @@ const movieSlice = createSlice({
 
 export const fetchSearch = createAsyncThunk(
   "search/fetchSearch",
-  async ({
-    searchQuery,
-    page,
-    type,
-  }: fetchParams): Promise<ApiSearchPayload> => {
+  async ({ searchQuery, page, type }: fetchParams): Promise<ApiPayload> => {
     const response = await axios.get(`/search/${type}`, {
       params: {
         query: searchQuery,
@@ -66,15 +79,13 @@ export const fetchSearch = createAsyncThunk(
         page: page,
       },
     });
-    const data: Promise<ApiSearchPayload> = await response.data;
+    const data: Promise<ApiPayload> = await response.data;
     const payload = (await data).results
       .map((item: Media) => {
         if (type !== "multi") return { ...item, media_type: type };
         else return item;
       })
       .filter((element) => element.media_type !== "person");
-
-    console.log();
 
     return { ...data, results: payload };
   }

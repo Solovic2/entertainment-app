@@ -1,58 +1,53 @@
-import { ReactNode, useState } from "react";
-import Modal from "react-modal";
+import {
+  MouseEventHandler,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 interface ReactModalProps {
   children: ReactNode;
   setTrailerUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 const ReactModal = ({ children, setTrailerUrl }: ReactModalProps) => {
   const [open, setOpen] = useState(true);
-  const onCloseModal = () => {
-    setOpen(false);
-    setTrailerUrl("");
-    document.body.style.overflow = "unset";
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleClick: MouseEventHandler = (e) => {
+    if (
+      modalRef.current &&
+      !modalRef.current.contains(e.target as HTMLDivElement)
+    ) {
+      setOpen(false);
+      setTrailerUrl("");
+    }
   };
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   return (
-    <div data-test-id="trailer-modal ">
-      <Modal
-        isOpen={open}
-        className="w-[426px] md:w-[640px] lg:w-[854px] h-[480px]"
-        onAfterOpen={() => (document.body.style.overflow = "hidden")}
-        onRequestClose={onCloseModal}
-        style={{
-          overlay: {
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(255, 255, 255, 0.75)",
-            zIndex: 1000,
-          },
-          content: {
-            position: "relative",
-            top: "0px",
-            left: "0px",
-            right: "0px",
-            bottom: "0px",
-            border: "none",
-            background: "transparent",
-            overflow: "auto",
-            WebkitOverflowScrolling: "touch",
-            borderRadius: "0px",
-            outline: "none",
-            // padding: "20px",
-            display: "flex",
-            justifyContent: "center",
-          },
-        }}
-        contentLabel=""
-      >
-        {children}
-      </Modal>
+    <div data-test-id="trailer-modal">
+      {open && (
+        <div
+          onClick={handleClick}
+          className="z-50 h-[100vh] w-full fixed top-0 left-0 flex  justify-center items-center bg-main-gray bg-opacity-80 "
+        >
+          <div className="h-full flex justify-center items-center opacity-100 bg-white/80 w-full p-10">
+            <div
+              className="w-[426px] md:w-[640px] lg:w-[854px] h-[480px]"
+              ref={modalRef}
+            >
+              {children}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

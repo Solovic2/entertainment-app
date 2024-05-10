@@ -1,11 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { Media } from "../../types";
+import { ApiPayload, Media, MediaCardProp } from "../../types";
+import { basic_imageUrl } from "../../constants";
 
 export interface TVState {
   loading: boolean;
-  movieList: Media[];
+  movieList: MediaCardProp[];
   error: string | null;
   currentPage: number;
   totalPages: number;
@@ -17,12 +18,7 @@ const initialStateTvSlice: TVState = {
   totalPages: 1,
   currentPage: 1,
 };
-export interface ApiTvPayload {
-  page: number;
-  results: Media[];
-  total_pages: number;
-  total_results: number;
-}
+
 const tvSlice = createSlice({
   name: "tv",
   initialState: initialStateTvSlice,
@@ -34,13 +30,31 @@ const tvSlice = createSlice({
       })
       .addCase(
         fetchTvMedia.fulfilled,
-        (state, action: PayloadAction<ApiTvPayload>) => {
+        (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
           // Add Movie Type to each one
           const payload = action.payload.results.map((item: Media) => {
-            return { ...item, media_type: "tv" };
+            return {
+              ...item,
+              media_type: "tv",
+              adult: item.adult ? "+18" : "PG",
+              date:
+                item.first_air_date?.substring(0, 4) ||
+                item.release_date?.substring(0, 4),
+              image: item.backdrop_path
+                ? basic_imageUrl + item.backdrop_path
+                : item.poster_path
+                ? basic_imageUrl + item.poster_path
+                : "/assets/placeholder-image.png",
+              title:
+                item.title ||
+                item.name ||
+                item.original_name ||
+                item.original_title,
+              cardLink: `${`/tv/${item.id}`}`,
+            };
           });
-          state.movieList = payload;
+          state.movieList = payload as MediaCardProp[];
           state.currentPage = action.payload.page;
           state.totalPages = action.payload.total_pages;
         }
@@ -54,7 +68,7 @@ const tvSlice = createSlice({
 
 export const fetchTvMedia = createAsyncThunk(
   "tv/fetchTvMedia",
-  async (page: number): Promise<ApiTvPayload> => {
+  async (page: number): Promise<ApiPayload> => {
     const response = await axios.get(requests.fetchTV, {
       params: {
         include_adult: "false",
@@ -63,7 +77,7 @@ export const fetchTvMedia = createAsyncThunk(
       },
     });
 
-    const data: Promise<ApiTvPayload> = await response.data;
+    const data: Promise<ApiPayload> = await response.data;
     return data;
   }
 );

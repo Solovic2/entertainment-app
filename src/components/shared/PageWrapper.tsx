@@ -10,9 +10,10 @@ import Pagination from "./Pagination";
 
 interface PageWrapperProps {
   children: ReactNode;
+  placeholder: string;
 }
 
-const PageWrapper = ({ children }: PageWrapperProps) => {
+const PageWrapper = ({ children, placeholder }: PageWrapperProps) => {
   const dispatch: AppDispatch = useDispatch();
   const {
     loading,
@@ -59,7 +60,7 @@ const PageWrapper = ({ children }: PageWrapperProps) => {
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full">
       <SearchInput
-        placeholder="Search for movies"
+        placeholder={placeholder}
         value={searchQuery}
         setSearchParams={handleSearchParamsChange}
       />

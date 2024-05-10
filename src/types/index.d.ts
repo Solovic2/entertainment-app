@@ -24,7 +24,16 @@ export interface Media {
   adult: boolean;
   title: string;
   name: string;
+  original_name?: string;
+  original_title?: string;
 }
+export type MediaCardProp = Pick<Media, "id" | "media_type"> & {
+  adult: string;
+  date: string;
+  image: string;
+  title: string;
+  cardLink: string;
+};
 export interface ApiPayload {
   page: number;
   results: Media[];
@@ -46,11 +55,10 @@ export interface Results {
   media_type?: string;
 }
 
-export type MultiMedia = Movie | TV;
 export interface ApiDetails {
   adult: boolean;
   backdrop_path: string;
-  belongs_to_collection?: any;
+  belongs_to_collection?: unknown;
   budget?: number;
   genres: Genre[];
   homepage: string;
@@ -81,7 +89,7 @@ export interface ApiDetails {
   last_air_date?: string;
   last_episode_to_air?: LastEpisodeToAir;
   name?: string;
-  next_episode_to_air?: any;
+  next_episode_to_air?: unknown;
   networks?: Network[];
   number_of_episodes?: number;
   number_of_seasons?: number;

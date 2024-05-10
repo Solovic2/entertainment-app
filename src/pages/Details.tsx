@@ -7,7 +7,6 @@ import { basic_imageUrl } from "../constants";
 import Button from "../components/shared/Button";
 import CardList from "../components/shared/CardList";
 import Loading from "../components/shared/Loading";
-import YouTube, { YouTubeProps } from "react-youtube";
 import movieTrailer from "movie-trailer";
 import Expanded from "../components/Details/Expanded";
 // import Error from "../components/shared/Error";
@@ -21,13 +20,6 @@ const Details = () => {
   const { loading, movieDetails, similarMovie, detailError } = useSelector(
     (state: RootState) => state.details
   );
-
-  // Options of Youtube
-  const opts: YouTubeProps["opts"] = {
-    playerVars: {
-      autoplay: 1,
-    },
-  };
 
   // Movie Image
   const image: string = movieDetails.backdrop_path
@@ -112,12 +104,15 @@ const Details = () => {
 
       {trailerUrl !== "" && (
         <ReactModal setTrailerUrl={setTrailerUrl}>
-          <YouTube
-            videoId={trailerUrl}
-            opts={opts}
-            className="mt-5 w-full "
-            iframeClassName="w-full h-full"
-          />
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${trailerUrl}`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
         </ReactModal>
       )}
       <div className="p-4">

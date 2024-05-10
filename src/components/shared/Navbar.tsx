@@ -12,7 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { sessionId } = useSelector((state: RootState) => state.auth);
-  const logOut: MouseEventHandler<HTMLDivElement> = () => {
+  const handleLogout: MouseEventHandler<HTMLDivElement> = () => {
     dispatch(logout());
     navigate("/login");
   };
@@ -70,7 +70,7 @@ const Navbar = () => {
           {sessionId ? (
             <div
               className="absolute right-0 md:left-0 md:bottom-20 md:mb-3 bg-white text-black font-outfitMedium rounded-bl-sm md:rounded-md w-20 h-10 mx-auto text-center  py-2 px-3 cursor-pointer md:after:content-[''] md:after:border-[10px] md:after:mt-5 md:after:absolute md:after:top-[50%] md:after:left-[30px] md:after:border-transparent md:after:border-t-white md:after:text-white"
-              onClick={logOut}
+              onClick={handleLogout}
               role="logOut-click"
             >
               <p className="hover:text-primaryRed">Logout</p>

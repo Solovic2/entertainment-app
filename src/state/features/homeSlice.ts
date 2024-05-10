@@ -1,12 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { Media, MultiMedia } from "../../types";
+import { ApiPayload, Media, MediaCardProp } from "../../types";
+import { basic_imageUrl } from "../../constants";
 
 export interface HomeState {
   loading: boolean;
-  trending: Media[];
-  recommending: Media[];
+  trending: MediaCardProp[];
+  recommending: MediaCardProp[];
   trendingError: string;
   recommendingError: string;
 }
@@ -17,12 +18,7 @@ export const initialStateHomeSlice: HomeState = {
   trendingError: "",
   recommendingError: "",
 };
-export interface ApiHomePayload {
-  page: number;
-  results: Media[];
-  total_pages: number;
-  total_results: number;
-}
+
 const homeSlice = createSlice({
   name: "home",
   initialState: initialStateHomeSlice,
@@ -34,14 +30,58 @@ const homeSlice = createSlice({
       })
       .addCase(
         fetchMedia.fulfilled,
-        (state, action: PayloadAction<ApiHomePayload>) => {
+        (state, action: PayloadAction<ApiPayload>) => {
           state.loading = false;
           state.trending = action.payload.results
-            .map((element: MultiMedia) => {
-              return { ...element, media_type: element.media_type };
+            .map((item: Media) => {
+              return {
+                ...item,
+                adult: item.adult ? "+18" : "PG",
+                date:
+                  item.first_air_date?.substring(0, 4) ||
+                  item.release_date?.substring(0, 4),
+                image: item.backdrop_path
+                  ? basic_imageUrl + item.backdrop_path
+                  : item.poster_path
+                  ? basic_imageUrl + item.poster_path
+                  : "/assets/placeholder-image.png",
+                title:
+                  item.title ||
+                  item.name ||
+                  item.original_name ||
+                  item.original_title,
+                cardLink:
+                  item.media_type === "tv"
+                    ? `${`/tv/${item.id}`}`
+                    : `${`/${item.media_type}/${item.id}`}`,
+              };
             })
-            .slice(0, 5);
-          state.recommending = action.payload.results.slice(-15);
+            .slice(0, 5) as MediaCardProp[];
+          state.recommending = action.payload.results
+            .map((item: Media) => {
+              return {
+                ...item,
+                adult: item.adult ? "+18" : "PG",
+                date:
+                  item.first_air_date?.substring(0, 4) ||
+                  item.release_date?.substring(0, 4),
+                image: item.backdrop_path
+                  ? basic_imageUrl + item.backdrop_path
+                  : item.poster_path
+                  ? basic_imageUrl + item.poster_path
+                  : "/assets/placeholder-image.png",
+                title:
+                  item.title ||
+                  item.name ||
+                  item.original_name ||
+                  item.original_title,
+                cardLink:
+                  item.media_type === "tv"
+                    ? `${`/tv/${item.id}`}`
+                    : `${`/${item.media_type}/${item.id}`}`,
+              };
+            })
+            .slice(-15) as MediaCardProp[];
         }
       )
       .addCase(fetchMedia.rejected, (state) => {
@@ -54,13 +94,13 @@ const homeSlice = createSlice({
 
 export const fetchMedia = createAsyncThunk(
   "home/fetchMedia",
-  async (): Promise<ApiHomePayload> => {
+  async (): Promise<ApiPayload> => {
     const response = await axios.get(requests.fetchTrending, {
       params: {
         include_adult: "false",
       },
     });
-    const data: Promise<ApiHomePayload> = await response.data;
+    const data: Promise<ApiPayload> = await response.data;
     return data;
   }
 );

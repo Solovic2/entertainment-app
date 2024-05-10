@@ -3,8 +3,7 @@ import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { PiTelevision } from "react-icons/pi";
 import { MdLocalMovies } from "react-icons/md";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { Media } from "../../types";
-import { basic_imageUrl } from "../../constants";
+import { MediaCardProp } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { updateBookmark } from "../../state/auth/authSlice";
@@ -14,45 +13,17 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface CardProps {
-  movie: Media;
+  movie: MediaCardProp;
 }
 const Card: FC<CardProps> = ({ movie }) => {
   const { bookmarks, sessionId } = useSelector(
     (state: RootState) => state.auth
   );
   const dispatch: AppDispatch = useDispatch();
-  const {
-    name,
-    title,
-    backdrop_path,
-    poster_path,
-    media_type,
-    first_air_date,
-    release_date,
-    adult,
-  } = movie;
-
-  // Card Date
-  const date = first_air_date?.substring(0, 4) || release_date?.substring(0, 4);
+  const { date, image, title, media_type, adult, cardLink } = movie;
 
   // Card Media Type
   const typeMedia = media_type === "tv" ? <PiTelevision /> : <MdLocalMovies />;
-
-  // Link Slug For Details
-  const cardLink: string =
-    media_type === "tv"
-      ? `${`/tv/${movie.id}`}`
-      : `${`/${media_type}/${movie.id}`}`;
-
-  // Card Image
-  const image: string = backdrop_path
-    ? basic_imageUrl + backdrop_path
-    : poster_path
-    ? basic_imageUrl + poster_path
-    : "/assets/placeholder-image.png";
-
-  // Adult Type
-  const adultType: string = adult ? "+18" : "PG";
 
   // Bookmark
   const isBookmarked = bookmarks.find((element) => element.id === movie.id);
@@ -83,7 +54,7 @@ const Card: FC<CardProps> = ({ movie }) => {
           <div
             className={`relative overflow-hidden cursor-pointer  bg-opacity-80  rounded-lg`}
           >
-            <div className="z-10 opacity-0 hover:opacity-100 select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
+            <div className="z-10 opacity-0 hover:opacity-100 transition-all select-none absolute flex justify-center items-center w-full h-full bg-greyishBlue bg-opacity-30  ">
               <div className="flex justify-center items-center gap-0 sm:gap-2 opacity-100 bg-greyishBlue py-2 px-2 md:py-3 md:px-4 rounded-full">
                 <IoIosInformationCircleOutline
                   color="#fff"
@@ -97,7 +68,7 @@ const Card: FC<CardProps> = ({ movie }) => {
               <Image
                 src={image}
                 className=" object-cover select-none hover:opacity-30 rounded-lg h-full w-full"
-                alt={title || name}
+                alt={title}
               />
             </div>
           </div>
@@ -111,10 +82,10 @@ const Card: FC<CardProps> = ({ movie }) => {
                 {media_type === "tv" ? "TV" : media_type}
               </p>
               <span className="w-1 h-1 rounded-full bg-white"></span>
-              <p>{adultType}</p>
+              <p>{adult}</p>
             </div>
             <p className="text-[14px] md:text-headingXs font-outfitMedium ">
-              {title || name}
+              {title}
             </p>
           </div>
         </div>

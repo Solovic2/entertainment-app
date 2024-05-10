@@ -22,7 +22,7 @@ const Home = () => {
     throw new Error("Error Fetching Data");
 
   return (
-    <PageWrapper>
+    <PageWrapper placeholder="Search for movies or tv series">
       {loading ? (
         <Loading />
       ) : (

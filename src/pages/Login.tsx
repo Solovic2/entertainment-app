@@ -1,28 +1,18 @@
-import { useEffect } from "react";
 import Button from "../components/shared/Button";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSessionID, loginUser } from "../state/auth/authSlice";
 import { AppDispatch, RootState } from "../state/store";
 import { MdMovieCreation } from "react-icons/md";
 
 const Login = () => {
-  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const { sessionId, requestToken, error, loading } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { error, loading } = useSelector((state: RootState) => state.auth);
 
   const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = () => {
-    dispatch(loginUser());
+    dispatch(loginUser()).then((res) =>
+      dispatch(createSessionID(res.payload.request_token))
+    );
   };
-  useEffect(() => {
-    if (requestToken) dispatch(createSessionID(requestToken));
-  }, [requestToken]);
-
-  useEffect(() => {
-    if (sessionId) navigate("/", { replace: true });
-  }, [sessionId]);
 
   if (error) throw new Error("Error When Login ");
   return (

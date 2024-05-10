@@ -1,13 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import requests from "../../api/requests";
-import { Media, User } from "../../types";
+import { Media, MediaCardProp, User } from "../../types";
 import axios from "../../api/axios";
+import { basic_imageUrl } from "../../constants";
 
 interface AuthState {
   user: User | null;
   requestToken: string;
   sessionId: string;
-  bookmarks: Media[];
+  bookmarks: MediaCardProp[];
   error: boolean;
   loading: boolean;
 }
@@ -22,6 +23,29 @@ interface SessionIdPayload {
 }
 const getLocalStorage = () => {
   const bookmarks = localStorage.getItem("bookmarks");
+  if (bookmarks !== null) {
+    const items = JSON.parse(bookmarks);
+    return items.map((item: Media) => {
+      return {
+        ...item,
+        adult: item.adult ? "+18" : "PG",
+        date:
+          item.first_air_date?.substring(0, 4) ||
+          item.release_date?.substring(0, 4),
+        image: item.backdrop_path
+          ? basic_imageUrl + item.backdrop_path
+          : item.poster_path
+          ? basic_imageUrl + item.poster_path
+          : "/assets/placeholder-image.png",
+        title:
+          item.title || item.name || item.original_name || item.original_title,
+        cardLink:
+          item.media_type === "tv"
+            ? `${`/tv/${item.id}`}`
+            : `${`/${item.media_type}/${item.id}`}`,
+      };
+    }) as MediaCardProp[];
+  }
   return bookmarks !== null && JSON.parse(bookmarks);
 };
 const setLocalStorage = (items: Media[]) => {

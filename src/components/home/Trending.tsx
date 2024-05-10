@@ -1,11 +1,11 @@
 import { FC } from "react";
 
-import { Media } from "../../types";
+import { MediaCardProp } from "../../types";
 import TrendingCard from "./TrendingCard";
 import LayoutCard from "../shared/LayoutCard";
 
 interface TrendingProps {
-  movieList: Media[];
+  movieList: MediaCardProp[];
 }
 const Trending: FC<TrendingProps> = ({ movieList }) => {
   return (

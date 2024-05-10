@@ -33,7 +33,7 @@ const Tv = () => {
   if (error) throw new Error(error);
 
   return (
-    <PageWrapper>
+    <PageWrapper placeholder="Search for tv series">
       {loading ? (
         <Loading />
       ) : (

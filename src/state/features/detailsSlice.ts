@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../api/axios";
-import { ApiDetails, Media } from "../../types";
-import { initialMovieDetails } from "../../constants";
+import { ApiDetails, Media, MediaCardProp } from "../../types";
+import { basic_imageUrl, initialMovieDetails } from "../../constants";
 
 interface detailsType {
   type: string;
@@ -10,7 +10,7 @@ interface detailsType {
 interface DetailState {
   loading: boolean;
   movieDetails: ApiDetails;
-  similarMovie: Media[];
+  similarMovie: MediaCardProp[];
   detailError: string;
 }
 export const initialStateDetailsSlice: DetailState = {
@@ -38,7 +38,30 @@ const detailsSlice = createSlice({
         (state, action: PayloadAction<DetailsData>) => {
           state.loading = false;
           state.movieDetails = action.payload.data;
-          state.similarMovie = action.payload.similarData;
+          state.similarMovie = action.payload.similarData.map((item: Media) => {
+            return {
+              ...item,
+              media_type: "movie",
+              adult: item.adult ? "+18" : "PG",
+              date:
+                item.first_air_date?.substring(0, 4) ||
+                item.release_date?.substring(0, 4),
+              image: item.backdrop_path
+                ? basic_imageUrl + item.backdrop_path
+                : item.poster_path
+                ? basic_imageUrl + item.poster_path
+                : "/assets/placeholder-image.png",
+              title:
+                item.title ||
+                item.name ||
+                item.original_name ||
+                item.original_title,
+              cardLink:
+                item.media_type === "tv"
+                  ? `${`/tv/${item.id}`}`
+                  : `${`/${item.media_type}/${item.id}`}`,
+            };
+          }) as MediaCardProp[];
         }
       )
       .addCase(fetchSpecificMedia.rejected, (state) => {
@@ -65,8 +88,6 @@ export const fetchSpecificMedia = createAsyncThunk(
         return { ...element, media_type: type };
       }),
     };
-    console.log(results);
-
     return results;
   }
 );
