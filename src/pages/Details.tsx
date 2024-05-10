@@ -87,7 +87,7 @@ const Details = () => {
         <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
           <>
             <div
-              className=" bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 rounded-md"
+              className=" bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 md:rounded-md"
               style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`,
               }}
