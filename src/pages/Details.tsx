@@ -10,7 +10,7 @@ import Loading from "../components/shared/Loading";
 import YouTube, { YouTubeProps } from "react-youtube";
 import movieTrailer from "movie-trailer";
 import Expanded from "../components/Details/Expanded";
-import Error from "../components/shared/Error";
+// import Error from "../components/shared/Error";
 import ReactModal from "../components/shared/Modal";
 const Details = () => {
   const { type, id } = useParams();
@@ -73,8 +73,8 @@ const Details = () => {
   }, [type, id, dispatch]);
 
   if (loading) return <Loading />;
-  if (detailError) return <Error message={detailError} />;
-  if (trailerErr) return <Error message={trailerErr} />;
+  if (detailError) throw new Error(detailError);
+  if (trailerErr) throw new Error(trailerErr);
   return (
     <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
       <div

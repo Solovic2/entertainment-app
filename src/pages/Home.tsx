@@ -5,7 +5,6 @@ import { fetchMedia } from "../state/features/homeSlice";
 import CardList from "../components/shared/CardList";
 import Loading from "../components/shared/Loading";
 import Trending from "../components/home/Trending";
-import Error from "../components/shared/Error";
 import PageWrapper from "../components/shared/PageWrapper";
 
 const Home = () => {
@@ -20,7 +19,7 @@ const Home = () => {
 
   // Display Error when fetch fail
   if (recommendingError || trendingError)
-    return <Error message="Error Fetching Data" />;
+    throw new Error("Error Fetching Data");
 
   return (
     <PageWrapper>

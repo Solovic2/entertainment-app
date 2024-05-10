@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSessionID, loginUser } from "../state/auth/authSlice";
 import { AppDispatch, RootState } from "../state/store";
-import Error from "../components/shared/Error";
 import { MdMovieCreation } from "react-icons/md";
 
 const Login = () => {
@@ -25,7 +24,7 @@ const Login = () => {
     if (sessionId) navigate("/", { replace: true });
   }, [sessionId]);
 
-  if (error) return <Error message="Error When Login " />;
+  if (error) throw new Error("Error When Login ");
   return (
     <div>
       <div className="flex flex-col items-center justify-center  ">

@@ -7,7 +7,6 @@ import CardList from "./CardList";
 import { fetchSearch } from "../../state/features/searchSlice";
 import Loading from "./Loading";
 import Pagination from "./Pagination";
-import Error from "./Error";
 
 interface PageWrapperProps {
   children: ReactNode;
@@ -55,7 +54,7 @@ const PageWrapper = ({ children }: PageWrapperProps) => {
     }
   }, [dispatch, searchQuery, page, type]);
 
-  if (error) return <Error message={error} />;
+  if (error) throw new Error(error);
 
   return (
     <div className="p-4 md:p-8 md:ml-24 w-full">

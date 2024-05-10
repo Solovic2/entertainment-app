@@ -6,13 +6,16 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./state/store.ts";
 import { ToastContainer } from "react-toastify";
+import ErrorBoundary from "./components/ui/ErrorBoundary.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <App />
-        <ToastContainer />
+        <ErrorBoundary>
+          <App />
+          <ToastContainer />
+        </ErrorBoundary>
       </Router>
     </Provider>
   </React.StrictMode>

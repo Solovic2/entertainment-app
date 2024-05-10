@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { fetchMovieMedia } from "../state/features/movieSlice";
 import CardList from "../components/shared/CardList";
 import Loading from "../components/shared/Loading";
-import Error from "../components/shared/Error";
 import { useSearchParams } from "react-router-dom";
 import PageWrapper from "../components/shared/PageWrapper";
 import Pagination from "../components/shared/Pagination";
@@ -29,7 +28,7 @@ const Movies = () => {
   }, [dispatch, searchParams, page]);
 
   // Display Error when fetch fail
-  if (error) return <Error message={error} />;
+  if (error) throw new Error(error);
 
   return (
     <PageWrapper>
