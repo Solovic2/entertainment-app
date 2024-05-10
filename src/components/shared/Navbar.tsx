@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "../../state/store";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBookmark } from "react-icons/fa6";
 import { logout } from "../../state/auth/authSlice";
+import UserCard from "./UserCard";
 
 const Navbar = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -70,18 +71,10 @@ const Navbar = () => {
       {isOpened && (
         <>
           {sessionId ? (
-            <div
-              className="absolute right-0 md:left-0 md:bottom-20 md:mb-3 bg-white text-black font-outfitMedium rounded-bl-sm md:rounded-md w-20 h-10 mx-auto text-center  py-2 px-3 cursor-pointer md:after:content-[''] md:after:border-[10px] md:after:mt-5 md:after:absolute md:after:top-[50%] md:after:left-[30px] md:after:border-transparent md:after:border-t-white md:after:text-white"
-              onClick={handleLogout}
-              role="logOut-click"
-            >
-              <p className="hover:text-primaryRed">Logout</p>
-            </div>
+            <UserCard text="Logout" handleLogout={handleLogout} />
           ) : (
             <NavLink to={"/login"} aria-label="login-page-link">
-              <div className="absolute right-0 md:left-0 md:bottom-20 md:mb-3 bg-white text-black font-outfitMedium rounded-bl-sm md:rounded-md w-20 h-10 mx-auto text-center py-2 px-3 cursor-pointer md:after:content-[''] md:after:border-[10px] md:after:mt-5 md:after:absolute md:after:top-[50%] md:after:left-[30px] md:after:border-transparent md:after:border-t-white md:after:text-white">
-                <p className="hover:text-primaryRed">Login</p>
-              </div>
+              <UserCard text="Login" />
             </NavLink>
           )}
         </>

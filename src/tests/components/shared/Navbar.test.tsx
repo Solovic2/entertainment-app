@@ -105,7 +105,7 @@ describe("Navbar Component", () => {
     const divContainer = screen.getByRole("login-click");
     await user.click(divContainer);
     const logOut = screen.queryByText("Logout");
-    const divLogOutContainer = screen.getByRole("logOut-click");
+    const divLogOutContainer = screen.getByRole("logout-click");
 
     expect(logOut).toBeInTheDocument();
 
