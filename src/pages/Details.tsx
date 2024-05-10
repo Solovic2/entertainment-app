@@ -79,12 +79,12 @@ const Details = () => {
 
   return (
     <>
-      <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
-        {detailError ? (
-          <Error message={detailError} />
-        ) : loadingDetails ? (
-          <Loading />
-        ) : (
+      {detailError ? (
+        <Error message={detailError} />
+      ) : loadingDetails ? (
+        <Loading />
+      ) : (
+        <div className=" md:p-8 md:ml-24 w-full" data-test-id="movie-details">
           <>
             <div
               className=" bg-cover bg-center h-[448px] shadow-inner bg-opacity-50 rounded-md"
@@ -130,22 +130,21 @@ const Details = () => {
               </>
             </div>
           </>
-        )}
-
-        {trailerUrl !== "" && (
-          <ReactModal setTrailerUrl={setTrailerUrl}>
-            <iframe
-              className="w-full h-full"
-              src={`https://www.youtube.com/embed/${trailerUrl}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </ReactModal>
-        )}
-      </div>
+          {trailerUrl !== "" && (
+            <ReactModal setTrailerUrl={setTrailerUrl}>
+              <iframe
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${trailerUrl}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </ReactModal>
+          )}
+        </div>
+      )}
     </>
   );
 };
