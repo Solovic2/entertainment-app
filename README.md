@@ -1,7 +1,7 @@
 
 # Entertainment App
 
-> Entertainment App is aa app for displaying movies, tv series and trending series that you can search on it, watch its trailer and bookmark it.
+> Entertainment App is an app for displaying movies, tv series and trending series that you can search on it, watch its trailer and bookmark it.
 
 
 ## 🚀 Live Demo
